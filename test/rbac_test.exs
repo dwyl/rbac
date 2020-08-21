@@ -44,7 +44,8 @@ defmodule RBACTest do
       updated_at: ~N[2020-08-19 10:04:38]
     },
     %{
-      desc: "Subscribes for updates e.g. newsletter or content from a specific person. Cannot comment until verified.",
+      desc:
+        "Subscribes for updates e.g. newsletter or content from a specific person. Cannot comment until verified.",
       id: 6,
       inserted_at: ~N[2020-08-19 10:04:38],
       name: "subscriber",
@@ -72,11 +73,16 @@ defmodule RBACTest do
   end
 
   test "this" do
-    roles = %{__meta__: "#Ecto.Schema.Metadata<:loaded",
-    desc: "Subscribes for updates e.g. newsletter", id: 6,
-    inserted_at: ~N[2020-08-21 16:40:22], name: "subscriber",
-    person_id: 1, updated_at: ~N[2020-08-21 16:40:22]}
+    roles = %{
+      __meta__: "#Ecto.Schema.Metadata<:loaded",
+      desc: "Subscribes for updates e.g. newsletter",
+      id: 6,
+      inserted_at: ~N[2020-08-21 16:40:22],
+      name: "subscriber",
+      person_id: 1,
+      updated_at: ~N[2020-08-21 16:40:22]
+    }
+
     assert RBAC.transform_role_list_to_string(roles) == "6"
   end
-
 end

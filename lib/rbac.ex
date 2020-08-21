@@ -18,7 +18,7 @@ defmodule RBAC do
       "1"
   """
   def transform_role_list_to_string(roles) when is_list(roles) do
-    Enum.map_join(roles, ",", &(&1.id))
+    Enum.map_join(roles, ",", & &1.id)
   end
 
   # this guard is meant to return the string form if it's already defined:
@@ -28,6 +28,6 @@ defmodule RBAC do
 
   # if roles is a struct/map then attempt to parse it:
   def transform_role_list_to_string(roles) do
-    [ Map.delete(roles, :__meta__) ] |> transform_role_list_to_string()
+    [Map.delete(roles, :__meta__)] |> transform_role_list_to_string()
   end
 end
