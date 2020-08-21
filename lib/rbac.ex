@@ -13,9 +13,6 @@ defmodule RBAC do
 
   """
   def transform_role_list_to_string(role_list) do
-    for i <- role_list do
-      i.id |> Integer.to_string
-    end
-    |> Enum.join(",")
+    Enum.map_join(role_list, ",", &(&1.id))
   end
 end

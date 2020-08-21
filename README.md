@@ -47,8 +47,7 @@ should learn about RBAC.
 
 ### Installation
 
-The package can be installed
-by adding `rbac` to your list of dependencies in `mix.exs`:
+Install by adding `rbac` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
