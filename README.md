@@ -6,7 +6,17 @@ Role Based Access Control (RBAC) gives you
 a human-friendly way of controlling access
 to specific data/features in your App(s).
 
+[![Build Status](https://img.shields.io/travis/com/dwyl/rbac/master.svg?style=flat-square)](https://travis-ci.org/dwyl/rbac)
+[![codecov.io](https://img.shields.io/codecov/c/github/dwyl/rbac/master.svg?style=flat-square)](http://codecov.io/github/dwyl/rbac?branch=master)
+[![Hex.pm](https://img.shields.io/hexpm/v/rbac?color=brightgreen&style=flat-square)](https://hex.pm/packages/rbac)
+[![Libraries.io dependency status](https://img.shields.io/librariesio/release/hex/rbac?logoColor=brightgreen&style=flat-square)](https://libraries.io/hex/rbac)
+[![docs](https://img.shields.io/badge/docs-maintained-brightgreen?style=flat-square)](https://hexdocs.pm/rbac/api-reference.html)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/rbac/issues)
+[![HitCount](http://hits.dwyl.io/dwyl/rbac.svg)](http://hits.dwyl.io/dwyl/rbac)
+
 </div>
+
+
 
 ## Why?
 
