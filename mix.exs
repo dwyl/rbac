@@ -22,7 +22,7 @@ defmodule Rbac.MixProject do
 
   # Run "mix help compile.app" to learn about applications.
   def application do
-    [
+    [git a
       extra_applications: [:logger]
     ]
   end
@@ -31,7 +31,11 @@ defmodule Rbac.MixProject do
   defp deps do
     [
       # Check test coverage
-      {:excoveralls, "~> 0.13.1", only: :test}
+      {:excoveralls, "~> 0.13.1", only: :test},
+
+      # Create Documentation for publishing Hex.docs:
+      {:ex_doc, "~> 0.22.2", only: :dev},
+      {:credo, "~> 1.4", only: [:dev], runtime: false}
     ]
   end
 
