@@ -61,8 +61,22 @@ defmodule RBACTest do
     }
   ]
 
-  test "greets the world" do
+  test "transform list of maps to comma separated string" do
     list = RBAC.transform_role_list_to_string(@role_list)
     assert list == "1,2,3,4,5,6,7"
   end
+
+  test "return string unmodified" do
+    roles = "1,2,3,4,5,6,7"
+    assert RBAC.transform_role_list_to_string(roles) == roles
+  end
+
+  test "this" do
+    roles = %{__meta__: "#Ecto.Schema.Metadata<:loaded",
+    desc: "Subscribes for updates e.g. newsletter", id: 6,
+    inserted_at: ~N[2020-08-21 16:40:22], name: "subscriber",
+    person_id: 1, updated_at: ~N[2020-08-21 16:40:22]}
+    assert RBAC.transform_role_list_to_string(roles) == "6"
+  end
+
 end
