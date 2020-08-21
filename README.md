@@ -6,7 +6,7 @@ Role Based Access Control (RBAC) gives you
 a human-friendly way of controlling access
 to specific data/features in your App(s).
 
-[![Build Status](https://img.shields.io/travis/com/dwyl/rbac/master.svg?style=flat-square)](https://travis-ci.org/dwyl/rbac)
+[![Build Status](https://img.shields.io/travis/com/dwyl/rbac/master.svg?style=flat-square)](https://travis-ci.com/dwyl/rbac)
 [![codecov.io](https://img.shields.io/codecov/c/github/dwyl/rbac/master.svg?style=flat-square)](http://codecov.io/github/dwyl/rbac?branch=master)
 [![Hex.pm](https://img.shields.io/hexpm/v/rbac?color=brightgreen&style=flat-square)](https://hex.pm/packages/rbac)
 [![Libraries.io dependency status](https://img.shields.io/librariesio/release/hex/rbac?logoColor=brightgreen&style=flat-square)](https://libraries.io/hex/rbac)
@@ -58,23 +58,17 @@ def deps do
 end
 ```
 
-TODO: update once published
-Documentation generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm).
-Once published, the docs can
-be found at [https://hexdocs.pm/rbac](https://hexdocs.pm/rbac).
+API/Function reference available at
+[https://hexdocs.pm/rbac](https://hexdocs.pm/rbac).
 
 
 
-###
+### Usage
 
 
 
 
-###
-
-
-
+<br /><br />
 
 ## tl;dr > RBAC Knowledge Summary
 
