@@ -1,18 +1,15 @@
-defmodule Rbac do
+defmodule RBAC do
   @moduledoc """
   Documentation for `Rbac`.
   """
 
   @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Rbac.hello()
-      :world
-
+  Transform list of maps to comma-separated string of ids.
   """
-  def hello do
-    :world
+  def transform_role_list_to_string(role_list) do
+    for i <- role_list do
+      i.id |> Integer.to_string
+    end
+    |> Enum.join(",")
   end
 end
