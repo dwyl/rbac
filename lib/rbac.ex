@@ -25,7 +25,7 @@ defmodule RBAC do
     Enum.filter(roles, fn role ->
       not Map.has_key?(role, :revoked) or is_nil(role.revoked)
     end)
-    |> Enum.map_join(",", &(&1.id))
+    |> Enum.map_join(",", & &1.id)
   end
 
   # this guard is meant to return the string form if it's already defined:
