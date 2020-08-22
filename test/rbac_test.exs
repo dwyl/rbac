@@ -59,7 +59,16 @@ defmodule RBACTest do
       name: "banned",
       person_id: 1,
       updated_at: ~N[2020-08-19 10:04:38]
-    }
+    },
+    %{
+      desc: "With great power comes great responsibility",
+      id: 8,
+      inserted_at: ~N[2020-08-19 10:04:38],
+      name: "superadmin",
+      person_id: 1,
+      updated_at: ~N[2020-08-19 10:04:38],
+      revoked: ~N[2020-08-19 10:04:38]
+    },
   ]
 
   test "transform list of maps to comma separated string" do
