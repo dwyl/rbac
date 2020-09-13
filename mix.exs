@@ -30,8 +30,17 @@ defmodule Rbac.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      # Httpoison for HTTP Requests: hex.pm/packages/httpoison
+      {:httpoison, "~> 1.7.0"},
+
+      # Decoding JSON data: https://hex.pm/packages/jason
+      {:jason, "~> 1.2.2"},
+
       # Check test coverage
       {:excoveralls, "~> 0.13.1", only: :test},
+
+      # auth_plug for client_id/1 in testsing: hex.pm/packages/auth_plug
+      {:auth_plug, "~> 1.2", only: [:dev, :test]},
 
       # Create Documentation for publishing Hex.docs:
       {:ex_doc, "~> 0.22.2", only: :dev},
