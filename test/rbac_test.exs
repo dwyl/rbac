@@ -81,8 +81,8 @@ defmodule RBACTest do
     assert RBAC.transform_role_list_to_string(roles) == roles
   end
 
-  test "this" do
-    roles = %{
+  test "transform_role_list_to_string/1" do
+    roles = [%{
       __meta__: "#Ecto.Schema.Metadata<:loaded",
       desc: "Subscribes for updates e.g. newsletter",
       id: 6,
@@ -90,8 +90,16 @@ defmodule RBACTest do
       name: "subscriber",
       person_id: 1,
       updated_at: ~N[2020-08-21 16:40:22]
-    }
+    }]
 
     assert RBAC.transform_role_list_to_string(roles) == "6"
   end
+
+  test "get_approles/2 loads the list of roles for an app" do
+    auth_url = "https://dwylauth.herokuapp.com"
+    client_id = AuthPlug.Token.client_id()
+    {:ok, roles} = RBAC.get_approles(auth_url, client_id)
+    assert length(roles) > 7
+  end
+
 end

@@ -2,7 +2,7 @@
 
 # `rbac`
 
-Role Based Access Control (RBAC) gives you
+Role Based Access Control (**`RBAC`**) gives you
 a human-friendly way of controlling access
 to specific data/features in your App(s).
 
@@ -20,7 +20,9 @@ to specific data/features in your App(s).
 
 ## Why?
 
-RBAC lets you easily manage roles and permissions in any application
+You want an _easy_ way to restrict access to features fo your Elixir/Phoenix App
+based on a sane model of roles.
+**`RBAC`** lets you _easily_ manage roles and permissions in any application
 and see at a glance exactly which permissions a person has in the system.
 It reduces complexity over traditional
 Access Control List (ACL) based permissions systems.
@@ -29,7 +31,7 @@ Access Control List (ACL) based permissions systems.
 
 ## What?
 
-The purpose of RBAC is to provide a framework
+The purpose of **`RBAC`** is to provide a framework
 for application administrators and developers
 to manage the permissions assigned to the people using the App(s).
 
@@ -39,7 +41,7 @@ to manage the permissions assigned to the people using the App(s).
 
 Anyone who is interested in developing secure applications
 used by many people with differing needs and permissions
-should learn about RBAC.
+should learn about **`RBAC`**.
 
 
 ## _How_?
@@ -52,13 +54,17 @@ Install by adding `rbac` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:rbac, "~> 0.1.0"}
+    {:rbac, "~> 0.3.0"}
   ]
 end
 ```
 
 API/Function reference available at
 [https://hexdocs.pm/rbac](https://hexdocs.pm/rbac).
+
+
+### Setup
+
 
 
 
