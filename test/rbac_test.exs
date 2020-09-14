@@ -112,11 +112,13 @@ defmodule RBACTest do
     assert length(list) == 9
 
     # lookup role by id:
-    {_, role} = :ets.lookup(:roles_cache, 1) |> List.first()
+    role = RBAC.get_role_from_cache(1)
     assert role.name == "superadmin"
-    
+
     # lookup role by name:
     {_, role} = :ets.lookup(:roles_cache, "admin") |> List.first()
     assert role.id == 2
   end
+
+
 end

@@ -70,7 +70,12 @@ defmodule RBAC do
   end
 
   @doc """
-  `init_roles/2
+  `init_roles/2 fetches the list of roles for an app 
+  from the auth app (auth_url) based on the client_id
+  and caches the list for fast access. 
+  ETS is an in-memory cache you get for *Free* in Elixir/Erlang.
+  See: https://elixir-lang.org/getting-started/mix-otp/ets.html
+  and: https://elixirschool.com/en/lessons/specifics/ets
   """
   def init_roles(auth_url, client_id) do
     {:ok, roles} = RBAC.get_approles(auth_url, client_id)
@@ -82,5 +87,13 @@ defmodule RBAC do
       :ets.insert(:roles_cache, {role.name, role})
       :ets.insert(:roles_cache, {role.id, role})
     end)
+  end
+
+  @doc """
+  `get_role_from_cache/1 retrieves a role from ets cache
+  """
+  def get_role_from_cache(term) do
+    {_, role} = :ets.lookup(:roles_cache, term) |> List.first()
+    role
   end
 end
