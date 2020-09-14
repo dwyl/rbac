@@ -98,7 +98,7 @@ defmodule RBACTest do
   test "init_roles/2 inserts roles list into ETS cache" do
     auth_url = "https://dwylauth.herokuapp.com"
     client_id = AuthPlug.Token.client_id()
-    RBAC.init_roles(auth_url, client_id)
+    RBAC.init_roles_cache(auth_url, client_id)
 
     #  confirm full roles inserted
     {_, list} = :ets.lookup(:roles_cache, "roles") |> List.first()
@@ -117,7 +117,7 @@ defmodule RBACTest do
   def init do
     auth_url = "https://dwylauth.herokuapp.com"
     client_id = AuthPlug.Token.client_id()
-    RBAC.init_roles(auth_url, client_id)
+    RBAC.init_roles_cache(auth_url, client_id)
   end
 
   test "get_role_from_cache/1 cache miss (unhappy path)" do

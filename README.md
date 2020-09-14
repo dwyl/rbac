@@ -59,18 +59,22 @@ def deps do
 end
 ```
 
-API/Function reference available at
-[https://hexdocs.pm/rbac](https://hexdocs.pm/rbac).
-
-
 ### Setup
+
+
 
 
 
 
 ### Usage
 
+Once you have added the 
 
+
+
+
+API/Function reference available at
+[https://hexdocs.pm/rbac](https://hexdocs.pm/rbac).
 
 
 <br /><br />

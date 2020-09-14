@@ -84,7 +84,7 @@ defmodule RBAC do
   See: https://elixir-lang.org/getting-started/mix-otp/ets.html
   and: https://elixirschool.com/en/lessons/specifics/ets
   """
-  def init_roles(auth_url, client_id) do
+  def init_roles_cache(auth_url, client_id) do
     {:ok, roles} = RBAC.get_approles(auth_url, client_id)
     :ets.new(:roles_cache, [:set, :protected, :named_table])
     # insert full list:
