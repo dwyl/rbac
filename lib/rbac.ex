@@ -39,7 +39,7 @@ defmodule RBAC do
   end
 
   @doc """
-  `get_approles/1` fetches the roles for the app
+  `get_approles/2` fetches the roles for the app
   """
   def get_approles(auth_url, client_id) do
     url = "#{auth_url}/approles/#{client_id}"
@@ -69,4 +69,18 @@ defmodule RBAC do
     end # https://stackoverflow.com/questions/31990134
   end
 
+  @doc """
+  `init_roles/2
+  """
+  def init_roles(auth_url, client_id) do
+    {:ok, roles} = RBAC.get_approles(auth_url, client_id)
+    :ets.new(:roles_cache, [:set, :protected, :named_table])
+    # insert full list:
+    :ets.insert(:roles_cache, {"roles", roles})
+    # insert individual roles for fast lookup:
+    Enum.each(roles, fn role -> 
+      :ets.insert(:roles_cache, {role.name, role})
+      :ets.insert(:roles_cache, {role.id, role})
+    end)
+  end
 end

@@ -102,4 +102,21 @@ defmodule RBACTest do
     assert length(roles) > 7
   end
 
+  test "init_roles/2 inserts roles list into ETS cache" do
+    auth_url = "https://dwylauth.herokuapp.com"
+    client_id = AuthPlug.Token.client_id()
+    RBAC.init_roles(auth_url, client_id)
+
+    # confirm full roles inserted
+    {_, list} = :ets.lookup(:roles_cache, "roles") |> List.first()
+    assert length(list) == 9
+
+    # lookup role by id:
+    {_, role} = :ets.lookup(:roles_cache, 1) |> List.first()
+    assert role.name == "superadmin"
+    
+    # lookup role by name:
+    {_, role} = :ets.lookup(:roles_cache, "admin") |> List.first()
+    assert role.id == 2
+  end
 end
