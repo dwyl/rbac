@@ -110,11 +110,11 @@ defmodule RBAC do
 
   @doc """
   `has_role/2 confirms if the person has the given role
-   e.g: 
-   has_role(conn, "home_admin") > true
-   has_role(conn, "potus") > false
+  e.g: 
+  has_role(conn, "home_admin") > true
+  has_role(conn, "potus") > false
   """
-  def has_role(conn, role_name) do
+  def has_role?(conn, role_name) do
     role = get_role_from_cache(role_name)
 
     person_roles =
@@ -123,5 +123,31 @@ defmodule RBAC do
       |> Enum.map(&String.to_integer/1)
 
     Enum.member?(person_roles, role.id)
+  end
+
+  @doc """
+  `has_role_any_of/2 checks if the person has any one (or more)
+  of the roles listed. Allows multiple roles to access content.
+  e.g: 
+  has_role_any?(conn, ["home_admin", "building_owner") > true
+  has_role_any?(conn, ["potus", "el_presidente") > false
+  """
+  def has_role_any?(conn, roles_list) do
+    list_ids = Enum.map(roles_list, fn role -> 
+      r = get_role_from_cache(role)
+      r.id
+    end)
+
+    # list of integers
+    person_roles =
+      conn.assigns.person.roles
+      |> String.split(",", trim: true)
+      |> Enum.map(&String.to_integer/1)
+
+    # find the first occurence of a role by id:
+    found = Enum.find(person_roles, fn rid -> 
+      Enum.member?(list_ids, rid)
+    end)
+    not is_nil(found)
   end
 end

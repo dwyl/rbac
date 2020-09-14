@@ -127,7 +127,7 @@ defmodule RBACTest do
     assert fail.id == 0
   end
 
-  test "RBAC.has_role/1 returns boolean true/false" do
+  test "RBAC.has_role?/1 returns boolean true/false" do
     init()
 
     fake_conn = %{
@@ -138,10 +138,10 @@ defmodule RBACTest do
       }
     }
 
-    assert RBAC.has_role(fake_conn, "superadmin")
+    assert RBAC.has_role?(fake_conn, "superadmin")
   end
 
-  test "RBAC.has_role/1 returns false when doesn't have role" do
+  test "RBAC.has_role?/1 returns false when doesn't have role" do
     init()
 
     fake_conn = %{
@@ -152,11 +152,11 @@ defmodule RBACTest do
       }
     }
 
-    assert not RBAC.has_role(fake_conn, "non_existent_role")
+    assert not RBAC.has_role?(fake_conn, "non_existent_role")
   end
 
 
-  test "RBAC.has_role/1 works with integers too!" do
+  test "RBAC.has_role?/1 works with integers too!" do
     init()
 
     fake_conn = %{
@@ -167,6 +167,48 @@ defmodule RBACTest do
       }
     }
 
-    assert RBAC.has_role(fake_conn, 3)
+    assert RBAC.has_role?(fake_conn, 3)
+  end
+
+  test "RBAC.has_role_any?/1 checks if person has any of the roles" do
+    init()
+
+    fake_conn = %{
+      assigns: %{
+        person: %{
+          roles: "1,2,3"
+        }
+      }
+    }
+
+   assert RBAC.has_role_any?(fake_conn, [4, 5, 3])
+  end
+
+  test "RBAC.has_role_any?/1 returns false if person doesn't have any of the roles" do
+    init()
+
+    fake_conn = %{
+      assigns: %{
+        person: %{
+          roles: "3,4,5"
+        }
+      }
+    }
+    # should not have role
+    assert not RBAC.has_role_any?(fake_conn, [2, 8, 6])
+  end
+
+  test "RBAC.has_role_any?/1 works with list of strings" do
+    init()
+
+    fake_conn = %{
+      assigns: %{
+        person: %{
+          roles: "3,4,5"
+        }
+      }
+    }
+    # should not have role
+    assert RBAC.has_role_any?(fake_conn, ["admin", "commenter", "blah"])
   end
 end
