@@ -59,15 +59,6 @@ defmodule RBACTest do
       name: "banned",
       person_id: 1,
       updated_at: ~N[2020-08-19 10:04:38]
-    },
-    %{
-      desc: "With great power comes great responsibility",
-      id: 8,
-      inserted_at: ~N[2020-08-19 10:04:38],
-      name: "superadmin",
-      person_id: 1,
-      updated_at: ~N[2020-08-19 10:04:38],
-      revoked: ~N[2020-08-19 10:04:38]
     }
   ]
 
@@ -116,9 +107,30 @@ defmodule RBACTest do
     assert role.name == "superadmin"
 
     # lookup role by name:
-    {_, role} = :ets.lookup(:roles_cache, "admin") |> List.first()
+    role = RBAC.get_role_from_cache("admin")
     assert role.id == 2
   end
 
+  # init_cache test helper function
+  def init do
+    auth_url = "https://dwylauth.herokuapp.com"
+    client_id = AuthPlug.Token.client_id()
+    RBAC.init_roles(auth_url, client_id)
+  end
 
+  test "get_role_from_cache/1 cache miss (unhappy path)" do
+
+  end
+
+  test "RBAC.has_role/1 returns boolean true/false" do
+    init()
+    fake_conn = %{
+      assigns: %{
+        person: %{
+          roles: "1"
+        }
+      }
+    }
+    assert RBAC.has_role(fake_conn, "superadmin")
+  end
 end

@@ -96,4 +96,20 @@ defmodule RBAC do
     {_, role} = :ets.lookup(:roles_cache, term) |> List.first()
     role
   end
+
+  @doc """
+  `has_role/2 confirms if the person has the given role
+  """
+  def has_role(conn, role_name) do
+    # IO.inspect(conn, label: "conn")
+    # IO.inspect(role_name, label: "role_name")
+    role = get_role_from_cache(role_name)
+    # IO.inspect(role)
+    person_roles = 
+    String.split(conn.assigns.person.roles, ",", trim: true)
+    |> Enum.map(&String.to_integer/1)
+
+    # IO.inspect(person_roles, label: "person_roles")
+    Enum.member?(person_roles, role.id)
+  end
 end
