@@ -154,4 +154,19 @@ defmodule RBACTest do
 
     assert not RBAC.has_role(fake_conn, "non_existent_role")
   end
+
+
+  test "RBAC.has_role/1 works with integers too!" do
+    init()
+
+    fake_conn = %{
+      assigns: %{
+        person: %{
+          roles: "1,2,3"
+        }
+      }
+    }
+
+    assert RBAC.has_role(fake_conn, 3)
+  end
 end

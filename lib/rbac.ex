@@ -110,6 +110,9 @@ defmodule RBAC do
 
   @doc """
   `has_role/2 confirms if the person has the given role
+   e.g: 
+   has_role(conn, "home_admin") > true
+   has_role(conn, "potus") > false
   """
   def has_role(conn, role_name) do
     role = get_role_from_cache(role_name)
