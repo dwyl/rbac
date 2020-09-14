@@ -109,10 +109,10 @@ defmodule RBAC do
   end
 
   @doc """
-  `has_role/2 confirms if the person has the given role
+  `has_role?/2 confirms if the person has the given role
   e.g: 
-  has_role(conn, "home_admin") > true
-  has_role(conn, "potus") > false
+  has_role?(conn, "home_admin") > true
+  has_role?(conn, "potus") > false
   """
   def has_role?(conn, role_name) do
     role = get_role_from_cache(role_name)
@@ -126,7 +126,7 @@ defmodule RBAC do
   end
 
   @doc """
-  `has_role_any_of/2 checks if the person has any one (or more)
+  `has_role_any/2 checks if the person has any one (or more)
   of the roles listed. Allows multiple roles to access content.
   e.g: 
   has_role_any?(conn, ["home_admin", "building_owner") > true
