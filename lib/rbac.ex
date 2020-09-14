@@ -44,6 +44,7 @@ defmodule RBAC do
   def get_approles(auth_url, client_id) do
     url = "#{auth_url}/approles/#{client_id}"
     HTTPoison.start()
+
     HTTPoison.get(url)
     |> parse_body_response()
   end
@@ -52,21 +53,27 @@ defmodule RBAC do
   `parse_body_response/1` parses the response
   so your app can use the resulting JSON (list of roles).
   """
-  @spec parse_body_response({atom, String.t}) :: String.t
+  @spec parse_body_response({atom, String.t()}) :: String.t()
   def parse_body_response({:error, err}), do: {:error, err}
+
   def parse_body_response({:ok, response}) do
     body = Map.get(response, :body)
     # IO.inspect(body)
+    # make keys of map atoms for easier access in templates
     if body == nil do
       {:error, :no_body}
-    else # make keys of map atoms for easier access in templates
+    else
       {:ok, str_key_map} = Jason.decode(body)
-      atom_key_map = Enum.map(str_key_map, fn role ->
-        for {key, val} <- role, into: %{},
-          do: {String.to_atom(key), val}
-      end)
+
+      atom_key_map =
+        Enum.map(str_key_map, fn role ->
+          for {key, val} <- role, into: %{}, do: {String.to_atom(key), val}
+        end)
+
       {:ok, atom_key_map}
-    end # https://stackoverflow.com/questions/31990134
+    end
+
+    # https://stackoverflow.com/questions/31990134
   end
 
   @doc """
@@ -83,7 +90,7 @@ defmodule RBAC do
     # insert full list:
     :ets.insert(:roles_cache, {"roles", roles})
     # insert individual roles for fast lookup:
-    Enum.each(roles, fn role -> 
+    Enum.each(roles, fn role ->
       :ets.insert(:roles_cache, {role.name, role})
       :ets.insert(:roles_cache, {role.id, role})
     end)
@@ -94,8 +101,9 @@ defmodule RBAC do
   """
   def get_role_from_cache(term) do
     case :ets.lookup(:roles_cache, term) do
-      # not found
+      # not found:
       [] -> %{id: 0}
+      # extract role:
       [{_term, role}] -> role
     end
   end
@@ -104,15 +112,13 @@ defmodule RBAC do
   `has_role/2 confirms if the person has the given role
   """
   def has_role(conn, role_name) do
-    # IO.inspect(conn, label: "conn")
-    # IO.inspect(role_name, label: "role_name")
     role = get_role_from_cache(role_name)
-    # IO.inspect(role)
-    person_roles = 
-    String.split(conn.assigns.person.roles, ",", trim: true)
-    |> Enum.map(&String.to_integer/1)
 
-    # IO.inspect(person_roles, label: "person_roles")
+    person_roles =
+      conn.assigns.person.roles
+      |> String.split(",", trim: true)
+      |> Enum.map(&String.to_integer/1)
+
     Enum.member?(person_roles, role.id)
   end
 end

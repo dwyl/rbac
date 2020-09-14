@@ -73,15 +73,17 @@ defmodule RBACTest do
   end
 
   test "transform_role_list_to_string/1" do
-    roles = [%{
-      __meta__: "#Ecto.Schema.Metadata<:loaded",
-      desc: "Subscribes for updates e.g. newsletter",
-      id: 6,
-      inserted_at: ~N[2020-08-21 16:40:22],
-      name: "subscriber",
-      person_id: 1,
-      updated_at: ~N[2020-08-21 16:40:22]
-    }]
+    roles = [
+      %{
+        __meta__: "#Ecto.Schema.Metadata<:loaded",
+        desc: "Subscribes for updates e.g. newsletter",
+        id: 6,
+        inserted_at: ~N[2020-08-21 16:40:22],
+        name: "subscriber",
+        person_id: 1,
+        updated_at: ~N[2020-08-21 16:40:22]
+      }
+    ]
 
     assert RBAC.transform_role_list_to_string(roles) == "6"
   end
@@ -98,7 +100,7 @@ defmodule RBACTest do
     client_id = AuthPlug.Token.client_id()
     RBAC.init_roles(auth_url, client_id)
 
-    # confirm full roles inserted
+    #  confirm full roles inserted
     {_, list} = :ets.lookup(:roles_cache, "roles") |> List.first()
     assert length(list) == 9
 
@@ -127,6 +129,7 @@ defmodule RBACTest do
 
   test "RBAC.has_role/1 returns boolean true/false" do
     init()
+
     fake_conn = %{
       assigns: %{
         person: %{
@@ -134,11 +137,13 @@ defmodule RBACTest do
         }
       }
     }
+
     assert RBAC.has_role(fake_conn, "superadmin")
   end
 
   test "RBAC.has_role/1 returns false when doesn't have role" do
     init()
+
     fake_conn = %{
       assigns: %{
         person: %{
@@ -146,6 +151,7 @@ defmodule RBACTest do
         }
       }
     }
+
     assert not RBAC.has_role(fake_conn, "non_existent_role")
   end
 end
