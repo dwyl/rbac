@@ -119,7 +119,10 @@ defmodule RBACTest do
   end
 
   test "get_role_from_cache/1 cache miss (unhappy path)" do
-
+    init()
+    # attempt to get a non-existent role:
+    fail = RBAC.get_role_from_cache("fail")
+    assert fail.id == 0
   end
 
   test "RBAC.has_role/1 returns boolean true/false" do
@@ -132,5 +135,17 @@ defmodule RBACTest do
       }
     }
     assert RBAC.has_role(fake_conn, "superadmin")
+  end
+
+  test "RBAC.has_role/1 returns false when doesn't have role" do
+    init()
+    fake_conn = %{
+      assigns: %{
+        person: %{
+          roles: "1,2,3"
+        }
+      }
+    }
+    assert not RBAC.has_role(fake_conn, "non_existent_role")
   end
 end

@@ -93,8 +93,11 @@ defmodule RBAC do
   `get_role_from_cache/1 retrieves a role from ets cache
   """
   def get_role_from_cache(term) do
-    {_, role} = :ets.lookup(:roles_cache, term) |> List.first()
-    role
+    case :ets.lookup(:roles_cache, term) do
+      # not found
+      [] -> %{id: 0}
+      [{_term, role}] -> role
+    end
   end
 
   @doc """
