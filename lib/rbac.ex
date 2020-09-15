@@ -43,7 +43,6 @@ defmodule RBAC do
   """
   def get_approles(auth_url, client_id) do
     url = "#{auth_url}/approles/#{client_id}"
-    HTTPoison.start()
 
     HTTPoison.get(url)
     |> parse_body_response()
@@ -77,9 +76,9 @@ defmodule RBAC do
   end
 
   @doc """
-  `init_roles/2 fetches the list of roles for an app 
+  `init_roles/2 fetches the list of roles for an app
   from the auth app (auth_url) based on the client_id
-  and caches the list for fast access. 
+  and caches the list for fast access.
   ETS is an in-memory cache you get for *Free* in Elixir/Erlang.
   See: https://elixir-lang.org/getting-started/mix-otp/ets.html
   and: https://elixirschool.com/en/lessons/specifics/ets
@@ -110,7 +109,7 @@ defmodule RBAC do
 
   @doc """
   `has_role?/2 confirms if the person has the given role
-  e.g: 
+  e.g:
   has_role?(conn, "home_admin") > true
   has_role?(conn, "potus") > false
   """
@@ -128,12 +127,12 @@ defmodule RBAC do
   @doc """
   `has_role_any/2 checks if the person has any one (or more)
   of the roles listed. Allows multiple roles to access content.
-  e.g: 
+  e.g:
   has_role_any?(conn, ["home_admin", "building_owner") > true
   has_role_any?(conn, ["potus", "el_presidente") > false
   """
   def has_role_any?(conn, roles_list) do
-    list_ids = Enum.map(roles_list, fn role -> 
+    list_ids = Enum.map(roles_list, fn role ->
       r = get_role_from_cache(role)
       r.id
     end)
@@ -145,7 +144,7 @@ defmodule RBAC do
       |> Enum.map(&String.to_integer/1)
 
     # find the first occurence of a role by id:
-    found = Enum.find(person_roles, fn rid -> 
+    found = Enum.find(person_roles, fn rid ->
       Enum.member?(list_ids, rid)
     end)
     not is_nil(found)
