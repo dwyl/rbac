@@ -100,7 +100,7 @@ defmodule RBAC do
   def get_role_from_cache(term) do
     case :ets.lookup(:roles_cache, term) do
       # not found:
-      [] -> %{id: 0}
+      [] -> :error
       # extract role:
       [{_term, role}] -> role
     end
