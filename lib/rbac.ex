@@ -52,7 +52,7 @@ defmodule RBAC do
   `parse_body_response/1` parses the response
   so your app can use the resulting JSON (list of roles).
   """
-  @spec parse_body_response({atom, String.t()}) :: String.t()
+  @spec parse_body_response({atom, String.t()}) :: String.t() | {:error, term()}
   def parse_body_response({:error, err}), do: {:error, err}
 
   def parse_body_response({:ok, response}) do
