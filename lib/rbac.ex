@@ -52,9 +52,9 @@ defmodule RBAC do
   `parse_body_response/1` parses the response
   so your app can use the resulting JSON (list of roles).
   """
-  def parse_body_response({:error, err}), do: {:error, err}
+  defp parse_body_response({:error, err}), do: {:error, err}
 
-  def parse_body_response({:ok, response}) do
+  defp parse_body_response({:ok, response}) do
     body = Map.get(response, :body)
     # IO.inspect(body)
     # make keys of map atoms for easier access in templates
