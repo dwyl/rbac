@@ -5,7 +5,9 @@ defmodule RBAC do
   require Logger
 
   @doc """
-  Transform a list of maps (roles) to comma-separated string of ids.
+  `transform_role_list_to_string/1` transforms a list of maps (roles)
+  to comma-separated string of ids (minimal data use)
+  which is JSON-compatible and can thus be used in the JWT in auth.
 
   ## Examples
 
@@ -48,7 +50,7 @@ defmodule RBAC do
   end
 
 
-  # `parse_body_response/1` parses the response
+  # `parse_body_response/1` parses the HTTP response
   # so your app can use the resulting JSON (list of roles).
   defp parse_body_response({:error, err}), do: {:error, err}
 
@@ -60,6 +62,8 @@ defmodule RBAC do
     else
       {:ok, str_key_map} = Jason.decode(body)
 
+      # Transform Map with strings as keys to atoms
+      # see: https://stackoverflow.com/questions/31990134
       atom_key_map =
         Enum.map(str_key_map, fn role ->
           for {key, val} <- role, into: %{}, do: {String.to_atom(key), val}
@@ -67,12 +71,10 @@ defmodule RBAC do
 
       {:ok, atom_key_map}
     end
-
-    # https://stackoverflow.com/questions/31990134
   end
 
   @doc """
-  `init_roles/2 fetches the list of roles for an app
+  `init_roles/2` fetches the list of roles for an app
   from the auth app (auth_url) based on the client_id
   and caches the list in-memory (ETS) for fast access.
   """
@@ -83,7 +85,7 @@ defmodule RBAC do
   end
 
   @doc """
-  `insert_roles_into_ets_cache/1 inserts the list of roles into
+  `insert_roles_into_ets_cache/1` inserts the list of roles into
   an ETS in-memroy cache for fast access at run-time.
   ETS is a high performance cache included *Free* in Elixir/Erlang.
   See: https://elixir-lang.org/getting-started/mix-otp/ets.html
@@ -101,7 +103,7 @@ defmodule RBAC do
   end
 
   @doc """
-  `get_role_from_cache/1 retrieves a role from ets cache
+  `get_role_from_cache/1` retrieves a role from ets cache
   """
   def get_role_from_cache(term) do
     case :ets.lookup(:roles_cache, term) do
@@ -116,7 +118,7 @@ defmodule RBAC do
 
   # extract the roles from String and make List of integers
   # e.g: "1,2,3" > [1,2,3]
-  defp get_roles_from_string(roles) do
+  defp transform_roles_string_to_list_of_ints(roles) do
     roles
     |> String.split(",", trim: true)
     |> Enum.map(&String.to_integer/1)
@@ -153,10 +155,12 @@ defmodule RBAC do
   false
   """
   def has_role?(conn, role_name) when is_map(conn) do
-    roles = get_roles_from_string(conn.assigns.person.roles)
+    roles = transform_roles_string_to_list_of_ints(conn.assigns.person.roles)
     has_role?(roles, role_name)
   end
 
+  @spec has_role_any?(maybe_improper_list | %{assigns: atom | %{person: atom | map}}, any) ::
+          boolean
   @doc """
   `has_role_any/2 checks if the person has any one (or more)
   of the roles listed. Allows multiple roles to access content.
@@ -182,7 +186,7 @@ defmodule RBAC do
   end
 
   def has_role_any?(conn, roles_list) when is_map(conn) do
-    roles = get_roles_from_string(conn.assigns.person.roles)
+    roles = transform_roles_string_to_list_of_ints(conn.assigns.person.roles)
     has_role_any?(roles, roles_list)
   end
 end
