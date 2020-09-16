@@ -2,6 +2,7 @@ defmodule RBAC do
   @moduledoc """
   Documentation for `Rbac`.
   """
+  require Logger
 
   @doc """
   Transform a list of maps (roles) to comma-separated string of ids.
@@ -48,15 +49,13 @@ defmodule RBAC do
     |> parse_body_response()
   end
 
-  @doc """
-  `parse_body_response/1` parses the response
-  so your app can use the resulting JSON (list of roles).
-  """
+
+  # `parse_body_response/1` parses the response
+  # so your app can use the resulting JSON (list of roles).
   defp parse_body_response({:error, err}), do: {:error, err}
 
   defp parse_body_response({:ok, response}) do
     body = Map.get(response, :body)
-    # IO.inspect(body)
     # make keys of map atoms for easier access in templates
     if body == nil do
       {:error, :no_body}
@@ -77,13 +76,22 @@ defmodule RBAC do
   @doc """
   `init_roles/2 fetches the list of roles for an app
   from the auth app (auth_url) based on the client_id
-  and caches the list for fast access.
-  ETS is an in-memory cache you get for *Free* in Elixir/Erlang.
-  See: https://elixir-lang.org/getting-started/mix-otp/ets.html
-  and: https://elixirschool.com/en/lessons/specifics/ets
+  and caches the list in-memory (ETS) for fast access.
   """
   def init_roles_cache(auth_url, client_id) do
     {:ok, roles} = RBAC.get_approles(auth_url, client_id)
+    # IO.inspect(roles)
+    insert_roles_into_ets(roles)
+  end
+
+  @doc """
+  `insert_roles_into_ets/1 inserts the list of roles into
+  an ETS in-memroy cache for fast access at run-time.
+  ETS is a high performance cache included *Free* in Elixir/Erlang.
+  See: https://elixir-lang.org/getting-started/mix-otp/ets.html
+  and: https://elixirschool.com/en/lessons/specifics/ets
+  """
+  def insert_roles_into_ets(roles) do
     :ets.new(:roles_cache, [:set, :protected, :named_table])
     # insert full list:
     :ets.insert(:roles_cache, {"roles", roles})
@@ -100,12 +108,23 @@ defmodule RBAC do
   def get_role_from_cache(term) do
     case :ets.lookup(:roles_cache, term) do
       # not found:
-      [] -> :error
-      # extract role:
+      [] -> # :error
+        Logger.error("rbac.ex:112 Role not found in ets: #{term} \n#{Exception.format_stacktrace()}")
+        %{id: 0}
+      # role found extract role:
       [{_term, role}] -> role
     end
   end
 
+  # extract the roles from String and make List of integers
+  # e.g: "1,2,3" > [1,2,3]
+  defp get_roles_from_conn(conn) do
+    conn.assigns.person.roles
+    |> String.split(",", trim: true)
+    |> Enum.map(&String.to_integer/1)
+  end
+
+  @spec has_role?(atom | %{assigns: atom | %{person: atom | %{roles: binary}}}, any) :: boolean
   @doc """
   `has_role?/2 confirms if the person has the given role
   e.g:
@@ -114,15 +133,12 @@ defmodule RBAC do
   """
   def has_role?(conn, role_name) do
     role = get_role_from_cache(role_name)
-
-    person_roles =
-      conn.assigns.person.roles
-      |> String.split(",", trim: true)
-      |> Enum.map(&String.to_integer/1)
+    person_roles = get_roles_from_conn(conn)
 
     Enum.member?(person_roles, role.id)
   end
 
+  @spec has_role_any?(atom | %{assigns: atom | %{person: atom | map}}, any) :: boolean
   @doc """
   `has_role_any/2 checks if the person has any one (or more)
   of the roles listed. Allows multiple roles to access content.
@@ -137,10 +153,7 @@ defmodule RBAC do
     end)
 
     # list of integers
-    person_roles =
-      conn.assigns.person.roles
-      |> String.split(",", trim: true)
-      |> Enum.map(&String.to_integer/1)
+    person_roles = get_roles_from_conn(conn)
 
     # find the first occurence of a role by id:
     found = Enum.find(person_roles, fn rid ->
