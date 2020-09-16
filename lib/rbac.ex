@@ -124,24 +124,23 @@ defmodule RBAC do
     |> Enum.map(&String.to_integer/1)
   end
 
-  @spec has_role?(atom | %{assigns: atom | %{person: atom | %{roles: binary}}}, any) :: boolean
+
+  def has_role?(roles, role_name) when is_list(roles) do
+    role = get_role_from_cache(role_name)
+    Enum.member?(roles, role.id)
+  end
+  # accept Plug.Conn as first argument to simply application code
   @doc """
   `has_role?/2 confirms if the person has the given role
   e.g:
   has_role?(conn, "home_admin") > true
   has_role?(conn, "potus") > false
   """
-  def has_role?(roles, role_name) when is_binary(roles) do
-    role = get_role_from_cache(role_name)
-    person_roles = get_roles_from_string(roles)
-    Enum.member?(person_roles, role.id)
-  end
-  # accept Plug.Conn as first argument to simply application code
   def has_role?(conn, role_name) when is_map(conn) do
-    has_role?(conn.assigns.person.roles, role_name)
+    roles = get_roles_from_string(conn.assigns.person.roles)
+    has_role?(roles, role_name)
   end
 
-  @spec has_role_any?(atom | %{assigns: atom | %{person: atom | map}}, any) :: boolean
   @doc """
   `has_role_any/2 checks if the person has any one (or more)
   of the roles listed. Allows multiple roles to access content.
@@ -149,23 +148,21 @@ defmodule RBAC do
   has_role_any?(conn, ["home_admin", "building_owner") > true
   has_role_any?(conn, ["potus", "el_presidente") > false
   """
-  def has_role_any?(roles, roles_list) when is_binary(roles) do
+  def has_role_any?(roles, roles_list) when is_list(roles) do
     list_ids = Enum.map(roles_list, fn role ->
       r = get_role_from_cache(role)
       r.id
     end)
 
-    # list of integers
-    person_roles = get_roles_from_string(roles)
-
     # find the first occurence of a role by id:
-    found = Enum.find(person_roles, fn rid ->
+    found = Enum.find(roles, fn rid ->
       Enum.member?(list_ids, rid)
     end)
     not is_nil(found)
   end
 
   def has_role_any?(conn, roles_list) when is_map(conn) do
-    has_role_any?(conn.assigns.person.roles, roles_list)
+    roles = get_roles_from_string(conn.assigns.person.roles)
+    has_role_any?(roles, roles_list)
   end
 end
