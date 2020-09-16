@@ -175,6 +175,11 @@ defmodule RBACTest do
     assert RBAC.has_role?([1,2,3], 3)
   end
 
+  test "RBAC.has_role?/2 accepts atom as second argument" do
+    init()
+    assert RBAC.has_role?([1,2,3], :admin)
+  end
+
   test "RBAC.has_role_any?/2 conn checks if person has any of the roles" do
     init()
 
@@ -199,7 +204,7 @@ defmodule RBACTest do
    assert RBAC.has_role_any?([1,2,3], [3,4,5])
   end
 
-  test "RBAC.has_role_any?/1 returns false if person doesn't have any of the roles" do
+  test "RBAC.has_role_any?/2 returns false if person doesn't have any of the roles" do
     init()
 
     fake_conn = %{
@@ -213,7 +218,7 @@ defmodule RBACTest do
     assert not RBAC.has_role_any?(fake_conn, [2, 8, 6])
   end
 
-  test "RBAC.has_role_any?/1 works with list of strings" do
+  test "RBAC.has_role_any?/2 works with list of strings" do
     init()
 
     fake_conn = %{
@@ -225,5 +230,10 @@ defmodule RBACTest do
     }
     # should not have role
     assert RBAC.has_role_any?(fake_conn, ["admin", "commenter", "blah"])
+  end
+
+  test "RBAC.has_role_any?/2 works with list of atoms" do
+    init()
+    assert RBAC.has_role_any?([1,2], [:admin, :commenter])
   end
 end
