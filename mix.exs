@@ -39,8 +39,8 @@ defmodule Rbac.MixProject do
       # Check test coverage
       {:excoveralls, "~> 0.13.1", only: :test},
 
-      # auth_plug for client_id/1 in testsing: hex.pm/packages/auth_plug
-      {:auth_plug, "~> 1.2", only: [:dev, :test]},
+      # auth_plug for client_id/1: hex.pm/packages/auth_plug
+      {:auth_plug, "~> 1.2"},
 
       # Create Documentation for publishing Hex.docs:
       {:ex_doc, "~> 0.22.2", only: :dev},

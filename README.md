@@ -54,14 +54,30 @@ Install by adding `rbac` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:rbac, "~> 0.3.0"}
+    {:rbac, "~> 0.5.0"}
   ]
 end
 ```
 
-### Setup
+<br />
 
-Open the `application.ex` file of your project 
+### Initialize Your Roles List (Cache)
+
+In order use **`RBAC`** you need to initialize 
+the _in-memory cache_ with a list of roles.
+
+#### Got your Own List of Roles?
+
+If you prefer to manage your own list of roles
+you can simply supply your own list of roles e.g:
+
+```elixir
+roles = [%{id: 1, name: "admin"}, %{id: 2, name: "subscriber"}]
+RBAC.insert_roles_into_ets_cache(roles)
+```
+
+To initialize the list of roles _once_ (_at boot_) for your Phoenix App,
+open the `application.ex` file of your project 
 and locate the `def start(_type, _args) do` definition, e.g:
 
 ```elixir
@@ -69,31 +85,63 @@ def start(_type, _args) do
   # List all child processes to be supervised
   children = [
     # Start the Ecto repository
-    Auth.Repo,
+    App.Repo,
     # Start the endpoint when the application starts
-    {Phoenix.PubSub, name: Auth.PubSub},
-    AuthWeb.Endpoint
+    {Phoenix.PubSub, name: App.PubSub},
+    AppWeb.Endpoint
     # Starts a worker by calling: Auth.Worker.start_link(arg)
     # {Auth.Worker, arg},
   ]
 
   # See https://hexdocs.pm/elixir/Supervisor.html
   # for other strategies and supported options
-  opts = [strategy: :one_for_one, name: Auth.Supervisor]
+  opts = [strategy: :one_for_one, name: App.Supervisor]
   Supervisor.start_link(children, opts)
 end
 ```
 
-Add the following code at the top of the function definition:
+Add the following code at the top of the `start/2` function definition:
 
 ```elixir
-# initialize RBAC Cache:
+# initialize RBAC Roles Cache:
+roles = [%{id: 1, name: "admin"}, %{id: 2, name: "subscriber"}]
+RBAC.insert_roles_into_ets_cache(roles)
+```
+
+#### Using `auth` to Manage Roles?
+
+**`RBAC`** is _independent_ from our 
+[`auth`](https://github.com/dwyl/auth) App
+and it's corresponding helper library 
+[`auth_plug`](https://github.com/dwyl/auth_plug).
+
+However if you want a ready-made list of universally applicable roles
+and an _easy_ way to manage and create custom roles for your App,
+**`auth`** has you covered: 
+https://dwylauth.herokuapp.com
+
+Once you have exported your 
+`AUTH_API_KEY` Environment Variable 
+following these instructions:
+https://github.com/dwyl/auth_plug#2-get-your-auth_api_key-
+
+You can source your list of roles 
+and initalize it 
+with the following code:
+
+```elixir
+# initialize RBAC Roles Cache:
 RBAC.init_roles_cache(
   "https://dwylauth.herokuapp.com",
   AuthPlug.Token.client_id()
 )
 ```
 
+`AuthPlug.Token.client_id()`
+expects the `AUTH_API_KEY` Environment Variable to be set.
+
+
+<br />
 
 ### Usage
 
@@ -102,11 +150,72 @@ you can easily check that a person has a required role
 using the following code:
 
 ```elixir
+# role argument as String
+RBAC.has_role?([2], "admin")
+> true
+
+# role argument as Atom
+RBAC.has_role?([2], :admin)
+> true
+
+# second argument (role) as Integer
+RBAC.has_role?([2], 2)
+> true
+```
+
+The first argument is a `List` of role ids.
+The second argument (`role`) can either be 
+an `String`, `Atom` or`Integer`
+corresponding to the `name` of the role 
+or the `id` respectively.
+We prefer using `String` because its more developer/maintenance friendly.
+We can immediately see which role is required
+
+
+
+Or if you want to check that the person has _any_ role 
+in a list of potential roles:
+
+```elixir
+RBAC.has_role_any?([2,4,7], ["admin", "commenter"])
+> true
+
+RBAC.has_role_any?([2,4,7], [:admin, :commenter])
+> true
+```
+
+
+### Using `rbac` with `auth_plug`
+
+If you are using [`auth_plug`](https://github.com/dwyl/auth_plug)
+to handle checking auth in your App. 
+It adds the `person` map to the `conn.assigns` struct.
+That means the person's roles are listed in:
+`conn.assigns.person.roles` 
+
+e.g:
+```elixir
+%{
+  app_id: 8,
+  auth_provider: "github",
+  email: "alex.mcawesome@gmail.com",
+  exp: 1631721211,
+  givenName: "Alex",
+  id: 772,
+  roles: "2"
+}
+```
+
+For convenience, we allow the first argument 
+of both `has_role/2` and `has_role_any?/2`
+to accept `conn` as the first argument:
+
+```elixir
 RBAC.has_role?(conn, "admin")
 > true
 ```
 
-Or if you want to check that the person has has any role in a list of potential roles:
+Check that the person has has any role in a list of potential roles:
 
 ```elixir
 RBAC.has_role_any?(conn, ["admin", "commenter"])
@@ -138,14 +247,14 @@ RBAC.has_role_any?(conn, [1,2,3])
 > true
 ```
 
-You can even _mix_ the type in the list:
+You can even _mix_ the type in the list (_though we don't recommend it..._):
 
 ```elixir
 RBAC.has_role_any?(conn, ["admin",2,3])
 > true
 ```
 
-But we recommend picking one, and think advise using strings for code legibility.
+We recommend picking one, and advise using strings for code legibility.
 e.g:
 
 ```elixir
@@ -162,7 +271,7 @@ RBAC.has_role?(conn, 13)
 It requires the developer/code reviewer/maintainer 
 to either know what the role is,
 or look it up in a list. 
-
+Stick with `String` as your role names in your code. 
 
 
 
@@ -224,8 +333,6 @@ they must do so with authorization from an administrator.
 An operation can only be completed
 if the person attempting to complete the transaction
 possesses the appropriate role.
-
-
 
 ## Recommended Reading
 

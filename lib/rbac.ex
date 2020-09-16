@@ -43,9 +43,7 @@ defmodule RBAC do
   `get_approles/2` fetches the roles for the app
   """
   def get_approles(auth_url, client_id) do
-    url = "#{auth_url}/approles/#{client_id}"
-
-    HTTPoison.get(url)
+    HTTPoison.get("#{auth_url}/approles/#{client_id}")
     |> parse_body_response()
   end
 
@@ -81,17 +79,17 @@ defmodule RBAC do
   def init_roles_cache(auth_url, client_id) do
     {:ok, roles} = RBAC.get_approles(auth_url, client_id)
     # IO.inspect(roles)
-    insert_roles_into_ets(roles)
+    insert_roles_into_ets_cache(roles)
   end
 
   @doc """
-  `insert_roles_into_ets/1 inserts the list of roles into
+  `insert_roles_into_ets_cache/1 inserts the list of roles into
   an ETS in-memroy cache for fast access at run-time.
   ETS is a high performance cache included *Free* in Elixir/Erlang.
   See: https://elixir-lang.org/getting-started/mix-otp/ets.html
   and: https://elixirschool.com/en/lessons/specifics/ets
   """
-  def insert_roles_into_ets(roles) do
+  def insert_roles_into_ets_cache(roles) do
     :ets.new(:roles_cache, [:set, :protected, :named_table])
     # insert full list:
     :ets.insert(:roles_cache, {"roles", roles})
@@ -131,22 +129,28 @@ defmodule RBAC do
   end
 
   @doc """
-  `has_role?/2 confirms if the person has the given role
+  `has_role?/2` confirms if the person has the given role.
   e.g:
-  has_role?(conn, "home_admin") > true
-  has_role?(conn, "potus") > false
+  has_role?([1,2,42], "home_admin")
+  true
+
+  has_role?([1,2,14], "potus")
+  false
   """
   def has_role?(roles, role_name) when is_list(roles) do
     role = get_role_from_cache(role_name)
     Enum.member?(roles, role.id)
   end
 
-  # accept Plug.Conn as first argument to simply application code
   @doc """
-  `has_role?/2 confirms if the person has the given role
+  `has_role?/2` confirms if the person has the given role
+  accept Plug.Conn as first argument to simply application code.
   e.g:
-  has_role?(conn, "home_admin") > true
-  has_role?(conn, "potus") > false
+  has_role?(conn, "home_admin")
+  true
+
+  has_role?(conn, "potus")
+  false
   """
   def has_role?(conn, role_name) when is_map(conn) do
     roles = get_roles_from_string(conn.assigns.person.roles)
@@ -157,8 +161,11 @@ defmodule RBAC do
   `has_role_any/2 checks if the person has any one (or more)
   of the roles listed. Allows multiple roles to access content.
   e.g:
-  has_role_any?(conn, ["home_admin", "building_owner") > true
-  has_role_any?(conn, ["potus", "el_presidente") > false
+  has_role_any?(conn, ["home_admin", "building_owner")
+  true
+
+  has_role_any?(conn, ["potus", "el_presidente")
+  false
   """
   def has_role_any?(roles, roles_list) when is_list(roles) do
     list_ids = Enum.map(roles_list, fn role ->
