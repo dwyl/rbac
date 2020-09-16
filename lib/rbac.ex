@@ -118,8 +118,8 @@ defmodule RBAC do
 
   # extract the roles from String and make List of integers
   # e.g: "1,2,3" > [1,2,3]
-  defp get_roles_from_conn(conn) do
-    conn.assigns.person.roles
+  defp get_roles_from_string(roles) do
+    roles
     |> String.split(",", trim: true)
     |> Enum.map(&String.to_integer/1)
   end
@@ -131,11 +131,14 @@ defmodule RBAC do
   has_role?(conn, "home_admin") > true
   has_role?(conn, "potus") > false
   """
-  def has_role?(conn, role_name) do
+  def has_role?(roles, role_name) when is_binary(roles) do
     role = get_role_from_cache(role_name)
-    person_roles = get_roles_from_conn(conn)
-
+    person_roles = get_roles_from_string(roles)
     Enum.member?(person_roles, role.id)
+  end
+  # accept Plug.Conn as first argument to simply application code
+  def has_role?(conn, role_name) when is_map(conn) do
+    has_role?(conn.assigns.person.roles, role_name)
   end
 
   @spec has_role_any?(atom | %{assigns: atom | %{person: atom | map}}, any) :: boolean
@@ -146,19 +149,23 @@ defmodule RBAC do
   has_role_any?(conn, ["home_admin", "building_owner") > true
   has_role_any?(conn, ["potus", "el_presidente") > false
   """
-  def has_role_any?(conn, roles_list) do
+  def has_role_any?(roles, roles_list) when is_binary(roles) do
     list_ids = Enum.map(roles_list, fn role ->
       r = get_role_from_cache(role)
       r.id
     end)
 
     # list of integers
-    person_roles = get_roles_from_conn(conn)
+    person_roles = get_roles_from_string(roles)
 
     # find the first occurence of a role by id:
     found = Enum.find(person_roles, fn rid ->
       Enum.member?(list_ids, rid)
     end)
     not is_nil(found)
+  end
+
+  def has_role_any?(conn, roles_list) when is_map(conn) do
+    has_role_any?(conn.assigns.person.roles, roles_list)
   end
 end
