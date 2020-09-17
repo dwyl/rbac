@@ -59,15 +59,6 @@ defmodule RBACTest do
       name: "banned",
       person_id: 1,
       updated_at: ~N[2020-08-19 10:04:38]
-    },
-    %{
-      desc: "With great power comes great responsibility",
-      id: 8,
-      inserted_at: ~N[2020-08-19 10:04:38],
-      name: "superadmin",
-      person_id: 1,
-      updated_at: ~N[2020-08-19 10:04:38],
-      revoked: ~N[2020-08-19 10:04:38]
     }
   ]
 
@@ -81,17 +72,168 @@ defmodule RBACTest do
     assert RBAC.transform_role_list_to_string(roles) == roles
   end
 
-  test "this" do
-    roles = %{
-      __meta__: "#Ecto.Schema.Metadata<:loaded",
-      desc: "Subscribes for updates e.g. newsletter",
-      id: 6,
-      inserted_at: ~N[2020-08-21 16:40:22],
-      name: "subscriber",
-      person_id: 1,
-      updated_at: ~N[2020-08-21 16:40:22]
-    }
+  test "transform_role_list_to_string/1" do
+    roles = [
+      %{
+        __meta__: "#Ecto.Schema.Metadata<:loaded",
+        desc: "Subscribes for updates e.g. newsletter",
+        id: 6,
+        inserted_at: ~N[2020-08-21 16:40:22],
+        name: "subscriber",
+        person_id: 1,
+        updated_at: ~N[2020-08-21 16:40:22]
+      }
+    ]
 
     assert RBAC.transform_role_list_to_string(roles) == "6"
+  end
+
+  test "get_approles/2 loads the list of roles for an app" do
+    auth_url = "https://dwylauth.herokuapp.com"
+    client_id = AuthPlug.Token.client_id()
+    {:ok, roles} = RBAC.get_approles(auth_url, client_id)
+    assert length(roles) > 7
+  end
+
+  test "init_roles/2 inserts roles list into ETS cache" do
+    auth_url = "https://dwylauth.herokuapp.com"
+    client_id = AuthPlug.Token.client_id()
+    RBAC.init_roles_cache(auth_url, client_id)
+
+    #  confirm full roles inserted
+    {_, list} = :ets.lookup(:roles_cache, "roles") |> List.first()
+    assert length(list) == 9
+
+    # lookup role by id:
+    role = RBAC.get_role_from_cache(1)
+    assert role.name == "superadmin"
+
+    # lookup role by name:
+    role = RBAC.get_role_from_cache("admin")
+    assert role.id == 2
+  end
+
+  # init_cache test helper function
+  def init do
+    auth_url = "https://dwylauth.herokuapp.com"
+    client_id = AuthPlug.Token.client_id()
+    RBAC.init_roles_cache(auth_url, client_id)
+  end
+
+  test "get_role_from_cache/1 cache miss (unhappy path)" do
+    init()
+    # attempt to get a non-existent role:
+    fail = RBAC.get_role_from_cache("fail")
+    assert fail.id == 0
+  end
+
+  test "RBAC.has_role?/2 returns boolean true/false" do
+    init()
+
+    fake_conn = %{
+      assigns: %{
+        person: %{
+          roles: "1"
+        }
+      }
+    }
+
+    assert RBAC.has_role?(fake_conn, "superadmin")
+  end
+
+  test "RBAC.has_role?/2 returns false when doesn't have role" do
+    init()
+
+    fake_conn = %{
+      assigns: %{
+        person: %{
+          roles: "1,2,3"
+        }
+      }
+    }
+
+    assert not RBAC.has_role?(fake_conn, "non_existent_role")
+  end
+
+
+  test "RBAC.has_role?/2 works with integers too!" do
+    init()
+
+    fake_conn = %{
+      assigns: %{
+        person: %{
+          roles: "1,2,3"
+        }
+      }
+    }
+
+    assert RBAC.has_role?(fake_conn, 3)
+  end
+
+  test "RBAC.has_role?/2 accepts List of ints as first argument" do
+    init()
+    assert RBAC.has_role?([1,2,3], 3)
+  end
+
+  test "RBAC.has_role?/2 accepts atom as second argument" do
+    init()
+    assert RBAC.has_role?([1,2,3], :admin)
+  end
+
+  test "RBAC.has_role_any?/2 conn checks if person has any of the roles" do
+    init()
+
+    fake_conn = %{
+      assigns: %{
+        person: %{
+          roles: "1,2,3"
+        }
+      }
+    }
+
+   assert RBAC.has_role_any?(fake_conn, [4, 5, 3])
+  end
+
+  test "RBAC.has_role_any?/2 List checks if person has any of the roles" do
+    init()
+   assert RBAC.has_role_any?([1,2,3], ["admin"])
+  end
+
+  test "RBAC.has_role_any?/2 List checks if person has any of the roles (List of ints)" do
+    init()
+   assert RBAC.has_role_any?([1,2,3], [3,4,5])
+  end
+
+  test "RBAC.has_role_any?/2 returns false if person doesn't have any of the roles" do
+    init()
+
+    fake_conn = %{
+      assigns: %{
+        person: %{
+          roles: "3,4,5"
+        }
+      }
+    }
+    # should not have role
+    assert not RBAC.has_role_any?(fake_conn, [2, 8, 6])
+  end
+
+  test "RBAC.has_role_any?/2 works with list of strings" do
+    init()
+
+    fake_conn = %{
+      assigns: %{
+        person: %{
+          roles: "3,4,5"
+        }
+      }
+    }
+    # should not have role
+    assert RBAC.has_role_any?(fake_conn, ["admin", "commenter", "blah"])
+  end
+
+  test "RBAC.has_role_any?/2 works with list of atoms" do
+    init()
+    assert RBAC.has_role_any?([1,2], [:admin, :commenter])
   end
 end
