@@ -116,9 +116,17 @@ defmodule RBAC do
     end
   end
 
-  # extract the roles from String and make List of integers
-  # e.g: "1,2,3" > [1,2,3]
-  defp transform_roles_string_to_list_of_ints(roles) do
+  @doc """
+  'parse_role_string` extracts the roles from String and makes a
+  List of integers
+
+  ## Example
+
+      iex> RBAC.parse_role_string("1,2,3")
+      [1,2,3]
+
+  """
+  def parse_role_string(roles) do
     roles
     |> String.split(",", trim: true)
     |> Enum.map(&String.to_integer/1)
@@ -155,7 +163,7 @@ defmodule RBAC do
   false
   """
   def has_role?(conn, role_name) when is_map(conn) do
-    roles = transform_roles_string_to_list_of_ints(conn.assigns.person.roles)
+    roles = parse_role_string(conn.assigns.person.roles)
     has_role?(roles, role_name)
   end
 
@@ -186,7 +194,7 @@ defmodule RBAC do
   end
 
   def has_role_any?(conn, roles_list) when is_map(conn) do
-    roles = transform_roles_string_to_list_of_ints(conn.assigns.person.roles)
+    roles = parse_role_string(conn.assigns.person.roles)
     has_role_any?(roles, roles_list)
   end
 end
