@@ -117,8 +117,8 @@ defmodule RBAC do
   end
 
   @doc """
-  'parse_role_string` extracts the roles from String and makes a
-  List of integers
+  `parse_role_string/1` extracts the roles from String and makes a
+  List of integers.
 
   ## Example
 
@@ -170,7 +170,7 @@ defmodule RBAC do
   @spec has_role_any?(maybe_improper_list | %{assigns: atom | %{person: atom | map}}, any) ::
           boolean
   @doc """
-  `has_role_any/2 checks if the person has any one (or more)
+  `has_role_any/2` checks if the person has any one (or more)
   of the roles listed. Allows multiple roles to access content.
   e.g:
   has_role_any?(conn, ["home_admin", "building_owner")
