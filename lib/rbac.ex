@@ -42,7 +42,7 @@ defmodule RBAC do
   end
 
   @doc """
-  `get_approles/2` fetches the roles for the app
+  `get_approles/2` fetches the roles for the app from auth server.
   """
   def get_approles(auth_url, client_id) do
     HTTPoison.get("#{auth_url}/approles/#{client_id}")
@@ -167,8 +167,7 @@ defmodule RBAC do
     has_role?(roles, role_name)
   end
 
-  @spec has_role_any?(maybe_improper_list | %{assigns: atom | %{person: atom | map}}, any) ::
-          boolean
+
   @doc """
   `has_role_any/2` checks if the person has any one (or more)
   of the roles listed. Allows multiple roles to access content.
