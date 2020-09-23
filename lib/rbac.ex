@@ -132,6 +132,15 @@ defmodule RBAC do
     |> Enum.map(&String.to_integer/1)
   end
 
+  @doc """
+  `list_approles` lists all the roles in the current role cache.
+  """
+  def list_approles() do
+    [{"roles", roles}] = :ets.lookup(:roles_cache, "roles")
+
+    roles
+  end
+
   # allow role to be an atom for conveinece:
   def has_role?(roles, role) when is_list(roles) and is_atom(role) do
     role = get_role_from_cache(Atom.to_string(role))
