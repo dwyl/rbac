@@ -236,4 +236,9 @@ defmodule RBACTest do
     init()
     assert RBAC.has_role_any?([1,2], [:admin, :commenter])
   end
+
+  test "RBAC.list_approles/0 returns the cached roles" do
+    init()
+    assert length(RBAC.list_approles()) > 7
+  end
 end
