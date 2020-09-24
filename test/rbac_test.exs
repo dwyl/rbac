@@ -247,4 +247,8 @@ defmodule RBACTest do
     {:ok, roles} = RBAC.get_personroles("https://dwylauth.herokuapp.com", 9089056)
     assert is_list(roles)
   end
+
+  test "RBAC.get_personroles errors when given wrong data" do
+    assert {:error, _} = RBAC.get_approles("https://doesnotexist", 1)
+  end
 end
