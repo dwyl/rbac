@@ -241,4 +241,10 @@ defmodule RBACTest do
     init()
     assert length(RBAC.list_approles()) > 7
   end
+
+  test "RBAC.get_personroles returns the correct data" do
+    # Cheaty test until blocking PR complete
+    {:ok, roles} = RBAC.get_personroles("https://dwylauth.herokuapp.com", 9089056)
+    assert is_list(roles)
+  end
 end

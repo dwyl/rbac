@@ -74,6 +74,24 @@ defmodule RBAC do
   end
 
   @doc """
+  `get_personroles` fetches a list of roles assigned to a person from the
+  specified `auth_url`, based off the `person_id`
+  """
+  def get_personroles(auth_url, person_id) do
+    get_personroles(auth_url, person_id, AuthPlug.Token.client_id())
+  end
+
+  def get_personroles(auth_url, person_id, client_id) do
+    case HTTPoison.get("#{auth_url}/personroles/#{person_id}/#{client_id}") do
+      {:ok, resp} ->
+        Map.get(resp, :body) |> Jason.decode()
+      {:error, _} = err ->
+        err
+    end
+
+  end
+
+  @doc """
   `init_roles/2` fetches the list of roles for an app
   from the auth app (auth_url) based on the client_id
   and caches the list in-memory (ETS) for fast access.
