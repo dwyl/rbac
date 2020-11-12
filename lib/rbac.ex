@@ -141,34 +141,22 @@ defmodule RBAC do
     roles
   end
 
-  # allow role to be an atom for conveinece:
-  def has_role?(roles, role) when is_list(roles) and is_atom(role) do
-    role = get_role_from_cache(Atom.to_string(role))
-    Enum.member?(roles, role.id)
-  end
 
   @doc """
   `has_role?/2` confirms if the person has the given role.
+  Accepts list of role ids or `%Plug.Conn{}` as first argument.
+
   e.g:
+  has_role?([1,2,42], :home_admin)
+  true
+
   has_role?([1,2,42], "home_admin")
   true
 
   has_role?([1,2,14], "potus")
   false
-  """
-  def has_role?(roles, role_name) when is_list(roles) do
-    role = get_role_from_cache(role_name)
-    Enum.member?(roles, role.id)
-  end
 
-  @doc """
-  `has_role?/2` confirms if the person has the given role
-  accept Plug.Conn as first argument to simply application code.
-  e.g:
-  has_role?(conn, "home_admin")
-  true
-
-  has_role?(conn, "potus")
+  has_role?(%Plug.Conn{}, "home_admin")
   false
   """
   def has_role?(conn, role_name) when is_map(conn) do
@@ -176,6 +164,14 @@ defmodule RBAC do
     has_role?(roles, role_name)
   end
 
+  def has_role?(roles, role) when is_list(roles) and is_atom(role) do
+    has_role?(roles, Atom.to_string(role))
+  end
+
+  def has_role?(roles, role_name) when is_list(roles) do
+    role = get_role_from_cache(role_name)
+    Enum.member?(roles, role.id)
+  end
 
   @doc """
   `has_role_any/2` checks if the person has any one (or more)
