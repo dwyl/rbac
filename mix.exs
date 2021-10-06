@@ -4,8 +4,8 @@ defmodule Rbac.MixProject do
   def project do
     [
       app: :rbac,
-      version: "0.5.2",
-      elixir: "~> 1.10",
+      version: "0.6.0",
+      elixir: "~> 1.12.3",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       description: "Helper functions for Role Based Access Control (RBAC)",
@@ -31,19 +31,19 @@ defmodule Rbac.MixProject do
   defp deps do
     [
       # Httpoison for HTTP Requests: hex.pm/packages/httpoison
-      {:httpoison, "~> 1.7.0"},
+      {:httpoison, "~> 1.8.0"},
 
       # Decoding JSON data: https://hex.pm/packages/jason
       {:jason, "~> 1.2.2"},
 
       # Check test coverage
-      {:excoveralls, "~> 0.13.1", only: :test},
+      {:excoveralls, "~> 0.14.3", only: :test},
 
       # auth_plug for client_id/1: hex.pm/packages/auth_plug
       {:auth_plug, "~> 1.2"},
 
       # Create Documentation for publishing Hex.docs:
-      {:ex_doc, "~> 0.22.2", only: :dev},
+      {:ex_doc, "~> 0.25.3", only: :dev},
       {:credo, "~> 1.4", only: [:dev], runtime: false}
     ]
   end
