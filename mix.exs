@@ -53,7 +53,7 @@ defmodule Rbac.MixProject do
       files: ~w(lib LICENSE mix.exs README.md),
       name: "rbac",
       licenses: ["GNU GPL v2.0"],
-      maintainers: ["dwyl"],
+      maintainers: ["dwyl & friends"],
       links: %{"GitHub" => "https://github.com/dwyl/rbac"}
     ]
   end
