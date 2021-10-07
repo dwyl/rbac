@@ -49,7 +49,6 @@ defmodule RBAC do
     |> parse_body_response()
   end
 
-
   # `parse_body_response/1` parses the HTTP response
   # so your app can use the resulting JSON (list of roles).
   defp parse_body_response({:error, err}), do: {:error, err}
@@ -62,7 +61,7 @@ defmodule RBAC do
     else
       {:ok, str_key_map} = Jason.decode(body)
 
-      # Transform Map with strings as keys to atoms
+      #  Transform Map with strings as keys to atoms
       # see: https://stackoverflow.com/questions/31990134
       atom_key_map =
         Enum.map(str_key_map, fn role ->
@@ -85,10 +84,10 @@ defmodule RBAC do
     case HTTPoison.get("#{auth_url}/personroles/#{person_id}/#{client_id}") do
       {:ok, resp} ->
         Map.get(resp, :body) |> Jason.decode()
+
       {:error, _} = err ->
         err
     end
-
   end
 
   @doc """
@@ -98,7 +97,6 @@ defmodule RBAC do
   """
   def init_roles_cache(auth_url, client_id) do
     {:ok, roles} = RBAC.get_approles(auth_url, client_id)
-    # IO.inspect(roles)
     insert_roles_into_ets_cache(roles)
   end
 
@@ -126,11 +124,17 @@ defmodule RBAC do
   def get_role_from_cache(term) do
     case :ets.lookup(:roles_cache, term) do
       # not found:
-      [] -> # :error
-        Logger.error("rbac.ex:112 Role not found in ets: #{term} \n#{Exception.format_stacktrace()}")
+      # :error
+      [] ->
+        Logger.error(
+          "rbac.ex:112 Role not found in ets: #{term} \n#{Exception.format_stacktrace()}"
+        )
+
         %{id: 0}
+
       # role found extract role:
-      [{_term, role}] -> role
+      [{_term, role}] ->
+        role
     end
   end
 
@@ -158,7 +162,6 @@ defmodule RBAC do
 
     roles
   end
-
 
   @doc """
   `has_role?/2` confirms if the person has the given role.
@@ -202,16 +205,19 @@ defmodule RBAC do
   false
   """
   def has_role_any?(roles, roles_list) when is_list(roles) do
-    list_ids = Enum.map(roles_list, fn role ->
-      role = if is_atom(role), do: Atom.to_string(role), else: role
-      r = get_role_from_cache(role)
-      r.id
-    end)
+    list_ids =
+      Enum.map(roles_list, fn role ->
+        role = if is_atom(role), do: Atom.to_string(role), else: role
+        r = get_role_from_cache(role)
+        r.id
+      end)
 
-    # find the first occurence of a role by id:
-    found = Enum.find(roles, fn rid ->
-      Enum.member?(list_ids, rid)
-    end)
+    #  find the first occurence of a role by id:
+    found =
+      Enum.find(roles, fn rid ->
+        Enum.member?(list_ids, rid)
+      end)
+
     not is_nil(found)
   end
 

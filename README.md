@@ -20,7 +20,7 @@ to specific data/features in your App(s).
 
 ## Why?
 
-You want an _easy_ way to restrict access to features fo your Elixir/Phoenix App
+You want an _easy_ way to restrict access to features for your Elixir/Phoenix App
 based on a sane model of roles.
 **`RBAC`** lets you _easily_ manage roles and permissions in any application
 and see at a glance exactly which permissions a person has in the system.
@@ -54,7 +54,7 @@ Install by adding `rbac` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:rbac, "~> 0.5.1"}
+    {:rbac, "~> 0.6.0"}
   ]
 end
 ```
@@ -63,7 +63,7 @@ end
 
 ### Initialize Your Roles List (Cache)
 
-In order use **`RBAC`** you need to initialize 
+In order to use **`RBAC`** you need to initialize 
 the _in-memory cache_ with a list of roles.
 
 #### Got your Own List of Roles?
@@ -126,7 +126,7 @@ following these instructions:
 https://github.com/dwyl/auth_plug#2-get-your-auth_api_key-
 
 You can source your list of roles 
-and initalize it 
+and initialize it 
 with the following code:
 
 ```elixir

@@ -26,3 +26,5 @@ rbac-*.tar
 /config/*.secret.exs
 .elixir_ls/
 .env
+
+.DS_Store
