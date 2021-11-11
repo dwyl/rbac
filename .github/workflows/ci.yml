@@ -31,5 +31,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         MIX_ENV: test
         AUTH_API_KEY: 2PzB7PPnpuLsbWmWtXpGyI+kfSQSQ1zUW2Atz/+8PdZuSEJzHgzGnJWV35nTKRwx
+        AUTH_URL: https://dwylauth.herokuapp.com
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
