@@ -28,9 +28,9 @@ jobs:
     - name: Run Tests
       run: mix coveralls.json
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         MIX_ENV: test
-        AUTH_API_KEY: 2PzB7PPnpuLsbWmWtXpGyI+kfSQSQ1zUW2Atz/+8PdZuSEJzHgzGnJWV35nTKRwx
+        AUTH_API_KEY: 2cfxNapy2cgJG6ENBn3J54ZcV3vtDkcP6ne7eB4JWqrpos3yxhE/2cfxNaJJQcjXdUWVJxc15AtVt3wHvPtRozB3crTJ7JPyapncMzF
         AUTH_URL: https://dwylauth.herokuapp.com
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
