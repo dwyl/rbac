@@ -6,7 +6,8 @@ Role Based Access Control (**`RBAC`**) gives you
 a human-friendly way of controlling access
 to specific data/features in your App(s).
 
-[![Build Status](https://img.shields.io/travis/dwyl/rbac/master.svg?style=flat-square)](https://travis-ci.org/dwyl/rbac)
+
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dwyl/rbac/Elixir%20CI?label=build&style=flat-square)
 [![codecov.io](https://img.shields.io/codecov/c/github/dwyl/rbac/master.svg?style=flat-square)](http://codecov.io/github/dwyl/rbac?branch=master)
 [![Hex.pm](https://img.shields.io/hexpm/v/rbac?color=brightgreen&style=flat-square)](https://hex.pm/packages/rbac)
 [![Libraries.io dependency status](https://img.shields.io/librariesio/release/hex/rbac?logoColor=brightgreen&style=flat-square)](https://libraries.io/hex/rbac)
