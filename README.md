@@ -6,13 +6,13 @@ Role Based Access Control (**`RBAC`**) gives you
 a human-friendly way of controlling access
 to specific data/features in your App(s).
 
-[![Build Status](https://img.shields.io/travis/com/dwyl/rbac/master.svg?style=flat-square)](https://travis-ci.com/dwyl/rbac)
+[![Build Status](https://img.shields.io/travis/dwyl/rbac/master.svg?style=flat-square)](https://travis-ci.org/dwyl/rbac)
 [![codecov.io](https://img.shields.io/codecov/c/github/dwyl/rbac/master.svg?style=flat-square)](http://codecov.io/github/dwyl/rbac?branch=master)
 [![Hex.pm](https://img.shields.io/hexpm/v/rbac?color=brightgreen&style=flat-square)](https://hex.pm/packages/rbac)
 [![Libraries.io dependency status](https://img.shields.io/librariesio/release/hex/rbac?logoColor=brightgreen&style=flat-square)](https://libraries.io/hex/rbac)
 [![docs](https://img.shields.io/badge/docs-maintained-brightgreen?style=flat-square)](https://hexdocs.pm/rbac/api-reference.html)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/rbac/issues)
-[![HitCount](http://hits.dwyl.io/dwyl/rbac.svg)](http://hits.dwyl.io/dwyl/rbac)
+[![HitCount](http://hits.dwyl.com/dwyl/rbac.svg)](http://hits.dwyl.com/dwyl/rbac)
 
 </div>
 
@@ -63,7 +63,7 @@ end
 
 ### Initialize Your Roles List (Cache)
 
-In order to use **`RBAC`** you need to initialize 
+In order to use **`RBAC`** you need to initialize
 the _in-memory cache_ with a list of roles.
 
 #### Got your Own List of Roles?
@@ -77,7 +77,7 @@ RBAC.insert_roles_into_ets_cache(roles)
 ```
 
 To initialize the list of roles _once_ (_at boot_) for your Phoenix App,
-open the `application.ex` file of your project 
+open the `application.ex` file of your project
 and locate the `def start(_type, _args) do` definition, e.g:
 
 ```elixir
@@ -110,23 +110,23 @@ RBAC.insert_roles_into_ets_cache(roles)
 
 #### Using `auth` to Manage Roles?
 
-**`RBAC`** is _independent_ from our 
+**`RBAC`** is _independent_ from our
 [`auth`](https://github.com/dwyl/auth) App
-and it's corresponding helper library 
+and it's corresponding helper library
 [`auth_plug`](https://github.com/dwyl/auth_plug).
 
 However if you want a ready-made list of universally applicable roles
 and an _easy_ way to manage and create custom roles for your App,
-**`auth`** has you covered: 
+**`auth`** has you covered:
 https://dwylauth.herokuapp.com
 
-Once you have exported your 
-`AUTH_API_KEY` Environment Variable 
+Once you have exported your
+`AUTH_API_KEY` Environment Variable
 following these instructions:
 https://github.com/dwyl/auth_plug#2-get-your-auth_api_key-
 
-You can source your list of roles 
-and initialize it 
+You can source your list of roles
+and initialize it
 with the following code:
 
 ```elixir
@@ -146,7 +146,7 @@ expects the `AUTH_API_KEY` Environment Variable to be set.
 ### Usage
 
 Once you have added the initialization code,
-you can easily check that a person has a required role 
+you can easily check that a person has a required role
 using the following code:
 
 ```elixir
@@ -164,16 +164,16 @@ RBAC.has_role?([2], 2)
 ```
 
 The first argument is a `List` of role ids.
-The second argument (`role`) can either be 
+The second argument (`role`) can either be
 an `String`, `Atom` or`Integer`
-corresponding to the `name` of the role 
+corresponding to the `name` of the role
 or the `id` respectively.
 We prefer using `String` because its more developer/maintenance friendly.
 We can immediately see which role is required
 
 
 
-Or if you want to check that the person has _any_ role 
+Or if you want to check that the person has _any_ role
 in a list of potential roles:
 
 ```elixir
@@ -188,10 +188,10 @@ RBAC.has_role_any?([2,4,7], [:admin, :commenter])
 ### Using `rbac` with `auth_plug`
 
 If you are using [`auth_plug`](https://github.com/dwyl/auth_plug)
-to handle checking auth in your App. 
+to handle checking auth in your App.
 It adds the `person` map to the `conn.assigns` struct.
 That means the person's roles are listed in:
-`conn.assigns.person.roles` 
+`conn.assigns.person.roles`
 
 e.g:
 ```elixir
@@ -206,7 +206,7 @@ e.g:
 }
 ```
 
-For convenience, we allow the first argument 
+For convenience, we allow the first argument
 of both `has_role/2` and `has_role_any?/2`
 to accept `conn` as the first argument:
 
@@ -223,7 +223,7 @@ RBAC.has_role_any?(conn, ["admin", "commenter"])
 ```
 
 We prefer to make our code as declarative and human-friendly as possible,
-hence the `String` role names. 
+hence the `String` role names.
 However both the role-checking functions also accept a list of integers,
 corresponding to the `role.id` of the required role, e.g:
 
@@ -258,20 +258,20 @@ We recommend picking one, and advise using strings for code legibility.
 e.g:
 
 ```elixir
-RBAC.has_role?(conn, "building_admin") 
+RBAC.has_role?(conn, "building_admin")
 ```
 
 Is very clear which role is required.
 Whereas using an `int` (_especially for custom roles_) is a bit more terse:
 
 ```elixir
-RBAC.has_role?(conn, 13) 
+RBAC.has_role?(conn, 13)
 ```
 
-It requires the developer/code reviewer/maintainer 
+It requires the developer/code reviewer/maintainer
 to either know what the role is,
-or look it up in a list. 
-Stick with `String` as your role names in your code. 
+or look it up in a list.
+Stick with `String` as your role names in your code.
 
 
 
