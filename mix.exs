@@ -4,7 +4,7 @@ defmodule Rbac.MixProject do
   def project do
     [
       app: :rbac,
-      version: "0.7.0",
+      version: "0.7.1",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -34,7 +34,7 @@ defmodule Rbac.MixProject do
       {:httpoison, "~> 1.8.0"},
 
       # Decoding JSON data: https://hex.pm/packages/jason
-      {:jason, "~> 1.2.2"},
+      {:jason, "~> 1.3.0"},
 
       # Check test coverage
       {:excoveralls, "~> 0.14.3", only: :test},
@@ -43,7 +43,7 @@ defmodule Rbac.MixProject do
       {:auth_plug, "~> 1.3"},
 
       # Create Documentation for publishing Hex.docs:
-      {:ex_doc, "~> 0.25.3", only: :dev},
+      {:ex_doc, "~> 0.28.2", only: :dev},
       {:credo, "~> 1.6.0-rc.1", only: [:dev], runtime: false}
     ]
   end
