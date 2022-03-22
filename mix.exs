@@ -40,7 +40,7 @@ defmodule Rbac.MixProject do
       {:excoveralls, "~> 0.14.3", only: :test},
 
       # auth_plug for client_id/1: hex.pm/packages/auth_plug
-      {:auth_plug, "~> 1.3"},
+      {:auth_plug, "~> 1.4"},
 
       # Create Documentation for publishing Hex.docs:
       {:ex_doc, "~> 0.28.2", only: :dev},
