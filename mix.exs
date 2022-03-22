@@ -4,7 +4,7 @@ defmodule Rbac.MixProject do
   def project do
     [
       app: :rbac,
-      version: "0.7.1",
+      version: "0.7.2",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -40,7 +40,7 @@ defmodule Rbac.MixProject do
       {:excoveralls, "~> 0.14.3", only: :test},
 
       # auth_plug for client_id/1: hex.pm/packages/auth_plug
-      {:auth_plug, "~> 1.3"},
+      {:auth_plug, "~> 1.4"},
 
       # Create Documentation for publishing Hex.docs:
       {:ex_doc, "~> 0.28.2", only: :dev},
@@ -52,9 +52,9 @@ defmodule Rbac.MixProject do
     [
       files: ~w(lib LICENSE mix.exs README.md),
       name: "rbac",
-      licenses: ["GNU GPL v2.0"],
+      licenses: ["GPL-2.0-or-later"],
       maintainers: ["dwyl & friends"],
       links: %{"GitHub" => "https://github.com/dwyl/rbac"}
     ]
   end
-end
+end 
