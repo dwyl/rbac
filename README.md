@@ -6,18 +6,17 @@ Role Based Access Control (**`RBAC`**) gives you
 a human-friendly way of controlling access
 to specific data/features in your App(s).
 
-
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dwyl/rbac/Elixir%20CI?label=build&style=flat-square)
 [![codecov.io](https://img.shields.io/codecov/c/github/dwyl/rbac/master.svg?style=flat-square)](http://codecov.io/github/dwyl/rbac?branch=master)
 [![Hex.pm](https://img.shields.io/hexpm/v/rbac?color=brightgreen&style=flat-square)](https://hex.pm/packages/rbac)
-[![Libraries.io dependency status](https://img.shields.io/librariesio/release/hex/rbac?logoColor=brightgreen&style=flat-square)](https://libraries.io/hex/rbac)
 [![docs](https://img.shields.io/badge/docs-maintained-brightgreen?style=flat-square)](https://hexdocs.pm/rbac/api-reference.html)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/rbac/issues)
 [![HitCount](http://hits.dwyl.com/dwyl/rbac.svg)](http://hits.dwyl.com/dwyl/rbac)
 
+<!--
+[![Libraries.io dependency status](https://img.shields.io/librariesio/release/hex/rbac?logoColor=brightgreen&style=flat-square)](https://libraries.io/hex/rbac)
+-->
 </div>
-
-
 
 ## Why?
 
@@ -28,15 +27,11 @@ and see at a glance exactly which permissions a person has in the system.
 It reduces complexity over traditional
 Access Control List (ACL) based permissions systems.
 
-
-
 ## What?
 
 The purpose of **`RBAC`** is to provide a framework
 for application administrators and developers
 to manage the permissions assigned to the people using the App(s).
-
-
 
 ## Who?
 
@@ -44,9 +39,7 @@ Anyone who is interested in developing secure applications
 used by many people with differing needs and permissions
 should learn about **`RBAC`**.
 
-
 ## _How_?
-
 
 ### Installation
 
@@ -55,7 +48,7 @@ Install by adding `rbac` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:rbac, "~> 0.6.0"}
+    {:rbac, "~> 1.0.0"}
   ]
 end
 ```
@@ -141,7 +134,6 @@ RBAC.init_roles_cache(
 `AuthPlug.Token.client_id()`
 expects the `AUTH_API_KEY` Environment Variable to be set.
 
-
 <br />
 
 ### Usage
@@ -172,8 +164,6 @@ or the `id` respectively.
 We prefer using `String` because its more developer/maintenance friendly.
 We can immediately see which role is required
 
-
-
 Or if you want to check that the person has _any_ role
 in a list of potential roles:
 
@@ -185,7 +175,6 @@ RBAC.has_role_any?([2,4,7], [:admin, :commenter])
 > true
 ```
 
-
 ### Using `rbac` with `auth_plug`
 
 If you are using [`auth_plug`](https://github.com/dwyl/auth_plug)
@@ -195,6 +184,7 @@ That means the person's roles are listed in:
 `conn.assigns.person.roles`
 
 e.g:
+
 ```elixir
 %{
   app_id: 8,
@@ -274,8 +264,6 @@ to either know what the role is,
 or look it up in a list.
 Stick with `String` as your role names in your code.
 
-
-
 API/Function reference available at
 [https://hexdocs.pm/rbac](https://hexdocs.pm/rbac).
 
@@ -306,7 +294,6 @@ Simply follow the instructions to get your `AUTH_API_KEY` and export it as an en
 
 ## tl;dr > RBAC Knowledge Summary
 
-
 Each role granted just enough flexibility and permissions
 to perform the tasks required for their job,
 this helps enforce the
@@ -316,27 +303,27 @@ The RBAC methodology is based on a set of three principal rules
 that govern access to systems:
 
 1. **Role Assignment**:
-Each transaction or operation can only be carried out
-if the person has assumed the appropriate role.
-An operation is defined as any action taken
-with respect to a system or network object that is protected by RBAC.
-Roles may be assigned by a separate party
-or selected by the person attempting to perform the action.
+   Each transaction or operation can only be carried out
+   if the person has assumed the appropriate role.
+   An operation is defined as any action taken
+   with respect to a system or network object that is protected by RBAC.
+   Roles may be assigned by a separate party
+   or selected by the person attempting to perform the action.
 
 2. **Role Authorization**:
-The purpose of role authorization
-is to ensure that people can only assume a role
-for which they have been given the appropriate authorization.
-When a person assumes a role,
-they must do so with authorization from an administrator.
+   The purpose of role authorization
+   is to ensure that people can only assume a role
+   for which they have been given the appropriate authorization.
+   When a person assumes a role,
+   they must do so with authorization from an administrator.
 
 3. **Transaction Authorization**:
-An operation can only be completed
-if the person attempting to complete the transaction
-possesses the appropriate role.
+   An operation can only be completed
+   if the person attempting to complete the transaction
+   possesses the appropriate role.
 
 ## Recommended Reading
 
-+ https://en.wikipedia.org/wiki/Role-based_access_control
-+ https://www.sumologic.com/glossary/role-based-access-control
-+ https://medium.com/@adriennedomingus/role-based-access-control-rbac-permissions-vs-roles-55f1f0051468
+- https://en.wikipedia.org/wiki/Role-based_access_control
+- https://www.sumologic.com/glossary/role-based-access-control
+- https://medium.com/@adriennedomingus/role-based-access-control-rbac-permissions-vs-roles-55f1f0051468
