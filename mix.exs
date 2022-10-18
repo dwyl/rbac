@@ -4,7 +4,7 @@ defmodule Rbac.MixProject do
   def project do
     [
       app: :rbac,
-      version: "1.0.1",
+      version: "1.0.2",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -40,7 +40,7 @@ defmodule Rbac.MixProject do
       {:excoveralls, "~> 0.14.3", only: :test},
 
       # auth_plug for client_id/1: hex.pm/packages/auth_plug
-      {:auth_plug, "~> 1.4.19"},
+      {:auth_plug, "~> 1.4.20"},
 
       # Create Documentation for publishing Hex.docs:
       {:ex_doc, "~> 0.28.2", only: :dev},

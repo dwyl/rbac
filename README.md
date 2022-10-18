@@ -48,7 +48,7 @@ Install by adding `rbac` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:rbac, "~> 1.0.0"}
+    {:rbac, "~> 1.0.2"}
   ]
 end
 ```
