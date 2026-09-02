@@ -1,12 +1,24 @@
 <div align="center">
 
-# `rbac`
+<!--
+Logo prompt: 
+Generate a 4k image in landscape orientation 
+a playful retro-inspired 8-bit large 2D TEXT logo in monospace font Roboto Mono
+The lowercase word “fields”, where each letter is a different color, 
+specifically:
+pink: ff4389, orange #f89332, yellow #ffde23, 
+green #31CC5D, teal #4ad8aa, and blue #74ceff
+Background color: WHITE. 
+Text must be ultra-sharp; No blur.
+
+>> Feel free to make a better (simpler, more stylish) logo. :-)
+-->
 
 Role Based Access Control (**`RBAC`**) gives you
 a human-friendly way of controlling access
 to specific data/features in your App(s).
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dwyl/rbac/Elixir%20CI?label=build&style=flat-square)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dwyl/fields/ci.yml?label=build&style=flat-square&branch=main)]()
 [![codecov.io](https://img.shields.io/codecov/c/github/dwyl/rbac/master.svg?style=flat-square)](http://codecov.io/github/dwyl/rbac?branch=master)
 [![Hex.pm](https://img.shields.io/hexpm/v/rbac?color=brightgreen&style=flat-square)](https://hex.pm/packages/rbac)
 [![docs](https://img.shields.io/badge/docs-maintained-brightgreen?style=flat-square)](https://hexdocs.pm/rbac/api-reference.html)

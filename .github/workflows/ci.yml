@@ -33,5 +33,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MIX_ENV: test
+          AUTH_API_KEY: 2cfxNbDLPhaRqsUBu1Hprp8Sd4yMng3u4d86m6SLjDYK82dm32W/2cfxNauZ2k54MwvfPVgvqLf7jjB38vsdCVimhLCgnXwiXRhj6ch/authdemo.fly.dev
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v7 # github.com/codecov/codecov-action
