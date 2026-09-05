@@ -155,7 +155,6 @@ defmodule RBACTest do
     assert not RBAC.has_role?(fake_conn, "non_existent_role")
   end
 
-
   test "RBAC.has_role?/2 works with integers too!" do
     init()
 
@@ -172,12 +171,12 @@ defmodule RBACTest do
 
   test "RBAC.has_role?/2 accepts List of ints as first argument" do
     init()
-    assert RBAC.has_role?([1,2,3], 3)
+    assert RBAC.has_role?([1, 2, 3], 3)
   end
 
   test "RBAC.has_role?/2 accepts atom as second argument" do
     init()
-    assert RBAC.has_role?([1,2,3], :admin)
+    assert RBAC.has_role?([1, 2, 3], :admin)
   end
 
   test "RBAC.has_role_any?/2 conn checks if person has any of the roles" do
@@ -196,12 +195,12 @@ defmodule RBACTest do
 
   test "RBAC.has_role_any?/2 List checks if person has any of the roles" do
     init()
-   assert RBAC.has_role_any?([1,2,3], ["admin"])
+   assert RBAC.has_role_any?([1, 2, 3], ["admin"])
   end
 
   test "RBAC.has_role_any?/2 List checks if person has any of the roles (List of ints)" do
     init()
-   assert RBAC.has_role_any?([1,2,3], [3,4,5])
+   assert RBAC.has_role_any?([1, 2, 3], [3, 4, 5])
   end
 
   test "RBAC.has_role_any?/2 returns false if person doesn't have any of the roles" do
@@ -234,7 +233,7 @@ defmodule RBACTest do
 
   test "RBAC.has_role_any?/2 works with list of atoms" do
     init()
-    assert RBAC.has_role_any?([1,2], [:admin, :commenter])
+    assert RBAC.has_role_any?([1, 2], [:admin, :commenter])
   end
 
   test "RBAC.list_approles/0 returns the cached roles" do
@@ -245,7 +244,7 @@ defmodule RBACTest do
   test "RBAC.get_personroles returns the correct data" do
     # Cheaty test until blocking PR complete
     auth_url = AuthPlug.Helpers.get_baseurl_from_auth_api_key()
-    {:ok, roles} = RBAC.get_personroles(auth_url, 9089056)
+    {:ok, roles} = RBAC.get_personroles(auth_url, 9_089_056)
     assert is_list(roles)
   end
 

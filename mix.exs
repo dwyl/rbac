@@ -40,12 +40,14 @@ defmodule Rbac.MixProject do
       # Decoding JSON data: https://hex.pm/packages/jason
       {:jason, "~> 1.0"},
 
-      # Check test coverage
-      {:excoveralls, "~> 0.18.5", only: :test},
-
       # auth_plug for client_id/1: hex.pm/packages/auth_plug
       {:auth_plug, "~> 1.6"},
 
+      # Useful functions: github.com/dwyl/useful
+      {:useful, "~> 1.15.0"},
+
+      # Check test coverage
+      {:excoveralls, "~> 0.18.5", only: :test},
       # Create Documentation for publishing Hex.docs:
       {:ex_doc, "~> 0.28.2", only: :dev},
       # Keeping code consistent: github.com/rrrene/credo
