@@ -8,6 +8,7 @@ defmodule Rbac.MixProject do
       elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
+      aliases: aliases(),
       description: "Helper functions for Role Based Access Control (RBAC)",
       package: package(),
       test_coverage: [tool: ExCoveralls]
@@ -16,6 +17,8 @@ defmodule Rbac.MixProject do
 
   def cli do
     [preferred_envs: [
+      c: :test,
+      ci: :test,
       coveralls: :test,
       "coveralls.detail": :test,
       "coveralls.post": :test,
@@ -62,6 +65,13 @@ defmodule Rbac.MixProject do
       licenses: ["GPL-2.0-or-later"],
       maintainers: ["dwyl & friends"],
       links: %{"GitHub" => "https://github.com/dwyl/rbac"}
+    ]
+  end
+
+  defp aliases do
+    [
+      c: ["coveralls.html"],
+      ci: ["coveralls.json"]
     ]
   end
 end
