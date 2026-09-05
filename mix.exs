@@ -35,16 +35,16 @@ defmodule Rbac.MixProject do
   defp deps do
     [
       # Httpoison for HTTP Requests: hex.pm/packages/httpoison
-      {:httpoison, "~> 1.8.0"},
+      {:httpoison, "~> 3.0.0"},
 
       # Decoding JSON data: https://hex.pm/packages/jason
       {:jason, "~> 1.0"},
 
       # Check test coverage
-      {:excoveralls, "~> 0.14.3", only: :test},
+      {:excoveralls, "~> 0.18.5", only: :test},
 
       # auth_plug for client_id/1: hex.pm/packages/auth_plug
-      {:auth_plug, "~> 1.4.20"},
+      {:auth_plug, "~> 1.6"},
 
       # Create Documentation for publishing Hex.docs:
       {:ex_doc, "~> 0.28.2", only: :dev},

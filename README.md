@@ -1,13 +1,17 @@
 <div align="center">
 
+<img height="100" alt="rbac-text-logo" src="https://github.com/user-attachments/assets/cd051c70-7d60-49f1-af1d-935c8b2c3ee3" />
+
 <!--
 Logo prompt: 
+
+"rbac" logo:
 Generate a 4k image in landscape orientation 
 a playful retro-inspired 8-bit large 2D TEXT logo in monospace font Roboto Mono
-The lowercase word “fields”, where each letter is a different color, 
+The lowercase word “rbac”, where each letter is a different color, 
 specifically:
-pink: ff4389, orange #f89332, yellow #ffde23, 
-green #31CC5D, teal #4ad8aa, and blue #74ceff
+pink: ff4389, yellow #ffde23, 
+green #31CC5D and blue #74ceff
 Background color: WHITE. 
 Text must be ultra-sharp; No blur.
 
@@ -15,10 +19,10 @@ Text must be ultra-sharp; No blur.
 -->
 
 Role Based Access Control (**`RBAC`**) gives you
-a human-friendly way of controlling access
-to specific data/features in your App(s).
+a **human-friendly** way to **control access**
+to specific **data/features** in your App(s).
 
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dwyl/fields/ci.yml?label=build&style=flat-square&branch=main)]()
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dwyl/rbac/ci.yml?label=build&style=flat-square&branch=main)]()
 [![codecov.io](https://img.shields.io/codecov/c/github/dwyl/rbac/master.svg?style=flat-square)](http://codecov.io/github/dwyl/rbac?branch=master)
 [![Hex.pm](https://img.shields.io/hexpm/v/rbac?color=brightgreen&style=flat-square)](https://hex.pm/packages/rbac)
 [![docs](https://img.shields.io/badge/docs-maintained-brightgreen?style=flat-square)](https://hexdocs.pm/rbac/api-reference.html)
@@ -339,3 +343,10 @@ that govern access to systems:
 - https://en.wikipedia.org/wiki/Role-based_access_control
 - https://www.sumologic.com/glossary/role-based-access-control
 - https://medium.com/@adriennedomingus/role-based-access-control-rbac-permissions-vs-roles-55f1f0051468
+
+
+<div align="center">
+
+<img alt="rbac-hero-8-bit-intro-image" src="https://github.com/user-attachments/assets/c1bc2fd3-a238-4027-99b2-b2ae4724a7aa" />
+
+</div>
