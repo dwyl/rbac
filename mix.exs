@@ -4,8 +4,8 @@ defmodule Rbac.MixProject do
   def project do
     [
       app: :rbac,
-      version: "1.0.3",
-      elixir: "~> 1.12",
+      version: "1.1.0",
+      elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       description: "Helper functions for Role Based Access Control (RBAC)",
@@ -48,7 +48,8 @@ defmodule Rbac.MixProject do
 
       # Create Documentation for publishing Hex.docs:
       {:ex_doc, "~> 0.28.2", only: :dev},
-      {:credo, "~> 1.6.0-rc.1", only: [:dev], runtime: false}
+      # Keeping code consistent: github.com/rrrene/credo
+      {:credo, "~> 1.7.19", only: [:dev], runtime: false}
     ]
   end
 
