@@ -89,20 +89,20 @@ defmodule RBACTest do
   end
 
   test "get_approles/2 loads the list of roles for an app" do
-    auth_url = "https://dwylauth.herokuapp.com"
+    auth_url = AuthPlug.Helpers.get_baseurl_from_auth_api_key()
     client_id = AuthPlug.Token.client_id()
     {:ok, roles} = RBAC.get_approles(auth_url, client_id)
     assert length(roles) > 7
   end
 
   test "init_roles/2 inserts roles list into ETS cache" do
-    auth_url = "https://dwylauth.herokuapp.com"
+    auth_url = AuthPlug.Helpers.get_baseurl_from_auth_api_key()
     client_id = AuthPlug.Token.client_id()
     RBAC.init_roles_cache(auth_url, client_id)
 
     #  confirm full roles inserted
     {_, list} = :ets.lookup(:roles_cache, "roles") |> List.first()
-    assert length(list) == 9
+    assert length(list) == 8
 
     # lookup role by id:
     role = RBAC.get_role_from_cache(1)
@@ -115,7 +115,7 @@ defmodule RBACTest do
 
   # init_cache test helper function
   def init do
-    auth_url = "https://dwylauth.herokuapp.com"
+    auth_url = AuthPlug.Helpers.get_baseurl_from_auth_api_key()
     client_id = AuthPlug.Token.client_id()
     RBAC.init_roles_cache(auth_url, client_id)
   end
@@ -244,7 +244,8 @@ defmodule RBACTest do
 
   test "RBAC.get_personroles returns the correct data" do
     # Cheaty test until blocking PR complete
-    {:ok, roles} = RBAC.get_personroles("https://dwylauth.herokuapp.com", 9089056)
+    auth_url = AuthPlug.Helpers.get_baseurl_from_auth_api_key()
+    {:ok, roles} = RBAC.get_personroles(auth_url, 9089056)
     assert is_list(roles)
   end
 
