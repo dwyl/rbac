@@ -9,7 +9,7 @@ defmodule Rbac.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       aliases: aliases(),
-      description: "Helper functions for Role Based Access Control (RBAC)",
+      description: "Functions for Role Based Access Control (RBAC)",
       package: package(),
       test_coverage: [tool: ExCoveralls]
     ]
