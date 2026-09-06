@@ -18,14 +18,15 @@ Text must be ultra-sharp; No blur.
 >> Feel free to make a better (simpler, more stylish) logo. :-)
 -->
 
-Role Based Access Control (**`RBAC`**) gives you
-a **human-friendly** way to **control access**
-to specific **data/features** in your App(s).
+Role Based Access Control (**`RBAC`**)
+gives you a **human-friendly** way <br />
+to **control access**
+to specific **data/features** in your `Elixir` App(s).
 
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dwyl/rbac/ci.yml?label=build&style=flat-square&branch=main)]()
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dwyl/rbac/ci.yml?label=build&style=flat-square&branch=main)](https://github.com/dwyl/rbac/actions/workflows/ci.yml)
 [![codecov.io](https://img.shields.io/codecov/c/github/dwyl/rbac/master.svg?style=flat-square)](http://codecov.io/github/dwyl/rbac?branch=master)
 [![Hex.pm](https://img.shields.io/hexpm/v/rbac?color=brightgreen&style=flat-square)](https://hex.pm/packages/rbac)
-[![docs](https://img.shields.io/badge/docs-maintained-brightgreen?style=flat-square)](https://hexdocs.pm/rbac/api-reference.html)
+[![docs](https://img.shields.io/badge/docs-maintained-brightgreen?style=flat-square)](https://rbac.hexdocs.pm/RBAC.html)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/rbac/issues)
 [![HitCount](http://hits.dwyl.com/dwyl/rbac.svg)](http://hits.dwyl.com/dwyl/rbac)
 
@@ -36,10 +37,13 @@ to specific **data/features** in your App(s).
 
 ## Why?
 
-You want an _easy_ way to restrict access to features for your Elixir/Phoenix App
+You need an _easy_ way to restrict access to features
+for your `Elixir /`Phoenix` App
 based on a sane model of roles.
-**`RBAC`** lets you _easily_ manage roles and permissions in any application
-and see at a glance exactly which permissions a person has in the system.
+**`RBAC`** lets you _easily_ manage roles
+and permissions in any application
+and see at a glance exactly
+which permissions a person has in the system.
 It reduces complexity over traditional
 Access Control List (ACL) based permissions systems.
 
@@ -64,7 +68,7 @@ Install by adding `rbac` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:rbac, "~> 1.0.3"}
+    {:rbac, "~> 1.1.0"}
   ]
 end
 ```
@@ -128,7 +132,7 @@ and it's corresponding helper library
 However if you want a ready-made list of universally applicable roles
 and an _easy_ way to manage and create custom roles for your App,
 **`auth`** has you covered:
-https://dwylauth.herokuapp.com
+[authdemo.fly.dev](https://authdemo.fly.dev/)
 
 Once you have exported your
 `AUTH_API_KEY` Environment Variable
@@ -142,7 +146,7 @@ with the following code:
 ```elixir
 # initialize RBAC Roles Cache:
 RBAC.init_roles_cache(
-  "https://dwylauth.herokuapp.com",
+  AuthPlug.Helpers.get_baseurl_from_auth_api_key(),
   AuthPlug.Token.client_id()
 )
 ```
@@ -344,9 +348,8 @@ that govern access to systems:
 - https://www.sumologic.com/glossary/role-based-access-control
 - https://medium.com/@adriennedomingus/role-based-access-control-rbac-permissions-vs-roles-55f1f0051468
 
-
 <div align="center">
 
-<img alt="rbac-hero-8-bit-intro-image" src="https://github.com/user-attachments/assets/c1bc2fd3-a238-4027-99b2-b2ae4724a7aa" />
+<img alt="rbac-8-bit-intro-image" src="https://github.com/user-attachments/assets/c1bc2fd3-a238-4027-99b2-b2ae4724a7aa" />
 
 </div>

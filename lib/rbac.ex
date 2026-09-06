@@ -1,6 +1,6 @@
 defmodule RBAC do
   @moduledoc """
-  Documentation for `Rbac`.
+  Documentation for `rbac`.
   """
   require Logger
 
