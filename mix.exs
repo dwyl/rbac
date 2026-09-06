@@ -39,7 +39,7 @@ defmodule Rbac.MixProject do
   defp deps do
     [
       # Httpoison for HTTP Requests: hex.pm/packages/httpoison
-      {:httpoison, "~> 3.0.0", override: true},
+      {:httpoison, "~> 3.0.0"},
 
       # Decoding JSON data: https://hex.pm/packages/jason
       {:jason, "~> 1.0"},
