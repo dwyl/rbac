@@ -60,13 +60,7 @@ defmodule RBAC do
       {:error, :no_body}
     else
       {:ok, str_key_map} = Jason.decode(body)
-
-      #  Transform Map with strings as keys to atoms
-      # see: https://stackoverflow.com/questions/31990134
-      atom_key_map =
-        Enum.map(str_key_map, fn role ->
-          for {key, val} <- role, into: %{}, do: {String.to_atom(key), val}
-        end)
+      atom_key_map = Useful.atomize_map_keys(str_key_map)
 
       {:ok, atom_key_map}
     end
@@ -157,7 +151,7 @@ defmodule RBAC do
   @doc """
   `list_approles` lists all the roles in the current role cache.
   """
-  def list_approles() do
+  def list_approles do
     [{"roles", roles}] = :ets.lookup(:roles_cache, "roles")
 
     roles

@@ -4,14 +4,22 @@ defmodule Rbac.MixProject do
   def project do
     [
       app: :rbac,
-      version: "0.7.2",
-      elixir: "~> 1.12",
+      version: "1.1.0",
+      elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      description: "Helper functions for Role Based Access Control (RBAC)",
+      aliases: aliases(),
+      description: "Functions for Role Based Access Control (RBAC)",
       package: package(),
-      test_coverage: [tool: ExCoveralls],
-      preferred_cli_env: [
+      test_coverage: [tool: ExCoveralls]
+    ]
+  end
+
+  def cli do
+    [
+      preferred_envs: [
+        c: :test,
+        ci: :test,
         coveralls: :test,
         "coveralls.detail": :test,
         "coveralls.post": :test,
@@ -31,20 +39,23 @@ defmodule Rbac.MixProject do
   defp deps do
     [
       # Httpoison for HTTP Requests: hex.pm/packages/httpoison
-      {:httpoison, "~> 1.8.0"},
+      {:httpoison, "~> 3.0.0"},
 
       # Decoding JSON data: https://hex.pm/packages/jason
-      {:jason, "~> 1.3.0"},
-
-      # Check test coverage
-      {:excoveralls, "~> 0.14.3", only: :test},
+      {:jason, "~> 1.0"},
 
       # auth_plug for client_id/1: hex.pm/packages/auth_plug
-      {:auth_plug, "~> 1.4"},
+      {:auth_plug, "~> 1.6"},
 
+      # Useful functions: github.com/dwyl/useful
+      {:useful, "~> 1.15.0"},
+
+      # Check test coverage
+      {:excoveralls, "~> 0.18.5", only: :test},
       # Create Documentation for publishing Hex.docs:
       {:ex_doc, "~> 0.28.2", only: :dev},
-      {:credo, "~> 1.6.0-rc.1", only: [:dev], runtime: false}
+      # Keeping code consistent: github.com/rrrene/credo
+      {:credo, "~> 1.7.19", only: [:dev], runtime: false}
     ]
   end
 
@@ -57,4 +68,11 @@ defmodule Rbac.MixProject do
       links: %{"GitHub" => "https://github.com/dwyl/rbac"}
     ]
   end
-end 
+
+  defp aliases do
+    [
+      c: ["coveralls.html"],
+      ci: ["coveralls.json"]
+    ]
+  end
+end

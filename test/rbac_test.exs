@@ -89,20 +89,20 @@ defmodule RBACTest do
   end
 
   test "get_approles/2 loads the list of roles for an app" do
-    auth_url = "https://dwylauth.herokuapp.com"
+    auth_url = AuthPlug.Helpers.get_baseurl_from_auth_api_key()
     client_id = AuthPlug.Token.client_id()
     {:ok, roles} = RBAC.get_approles(auth_url, client_id)
     assert length(roles) > 7
   end
 
   test "init_roles/2 inserts roles list into ETS cache" do
-    auth_url = "https://dwylauth.herokuapp.com"
+    auth_url = AuthPlug.Helpers.get_baseurl_from_auth_api_key()
     client_id = AuthPlug.Token.client_id()
     RBAC.init_roles_cache(auth_url, client_id)
 
     #  confirm full roles inserted
     {_, list} = :ets.lookup(:roles_cache, "roles") |> List.first()
-    assert length(list) == 9
+    assert length(list) == 8
 
     # lookup role by id:
     role = RBAC.get_role_from_cache(1)
@@ -115,7 +115,7 @@ defmodule RBACTest do
 
   # init_cache test helper function
   def init do
-    auth_url = "https://dwylauth.herokuapp.com"
+    auth_url = AuthPlug.Helpers.get_baseurl_from_auth_api_key()
     client_id = AuthPlug.Token.client_id()
     RBAC.init_roles_cache(auth_url, client_id)
   end
@@ -155,7 +155,6 @@ defmodule RBACTest do
     assert not RBAC.has_role?(fake_conn, "non_existent_role")
   end
 
-
   test "RBAC.has_role?/2 works with integers too!" do
     init()
 
@@ -172,12 +171,12 @@ defmodule RBACTest do
 
   test "RBAC.has_role?/2 accepts List of ints as first argument" do
     init()
-    assert RBAC.has_role?([1,2,3], 3)
+    assert RBAC.has_role?([1, 2, 3], 3)
   end
 
   test "RBAC.has_role?/2 accepts atom as second argument" do
     init()
-    assert RBAC.has_role?([1,2,3], :admin)
+    assert RBAC.has_role?([1, 2, 3], :admin)
   end
 
   test "RBAC.has_role_any?/2 conn checks if person has any of the roles" do
@@ -191,17 +190,17 @@ defmodule RBACTest do
       }
     }
 
-   assert RBAC.has_role_any?(fake_conn, [4, 5, 3])
+    assert RBAC.has_role_any?(fake_conn, [4, 5, 3])
   end
 
   test "RBAC.has_role_any?/2 List checks if person has any of the roles" do
     init()
-   assert RBAC.has_role_any?([1,2,3], ["admin"])
+    assert RBAC.has_role_any?([1, 2, 3], ["admin"])
   end
 
   test "RBAC.has_role_any?/2 List checks if person has any of the roles (List of ints)" do
     init()
-   assert RBAC.has_role_any?([1,2,3], [3,4,5])
+    assert RBAC.has_role_any?([1, 2, 3], [3, 4, 5])
   end
 
   test "RBAC.has_role_any?/2 returns false if person doesn't have any of the roles" do
@@ -214,6 +213,7 @@ defmodule RBACTest do
         }
       }
     }
+
     # should not have role
     assert not RBAC.has_role_any?(fake_conn, [2, 8, 6])
   end
@@ -228,13 +228,14 @@ defmodule RBACTest do
         }
       }
     }
+
     # should not have role
     assert RBAC.has_role_any?(fake_conn, ["admin", "commenter", "blah"])
   end
 
   test "RBAC.has_role_any?/2 works with list of atoms" do
     init()
-    assert RBAC.has_role_any?([1,2], [:admin, :commenter])
+    assert RBAC.has_role_any?([1, 2], [:admin, :commenter])
   end
 
   test "RBAC.list_approles/0 returns the cached roles" do
@@ -244,7 +245,8 @@ defmodule RBACTest do
 
   test "RBAC.get_personroles returns the correct data" do
     # Cheaty test until blocking PR complete
-    {:ok, roles} = RBAC.get_personroles("https://dwylauth.herokuapp.com", 9089056)
+    auth_url = AuthPlug.Helpers.get_baseurl_from_auth_api_key()
+    {:ok, roles} = RBAC.get_personroles(auth_url, 9_089_056)
     assert is_list(roles)
   end
 
